@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Login | RIGHT ONE</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:Arial;
+    background:
+        linear-gradient(rgba(10,61,98,0.85),rgba(10,61,98,0.85)),
+        url("RIGHT_ONE_LOGO.png") no-repeat center;
+    background-size:300px;
+}
+
+.box{
+    background:white;
+    width:350px;
+    padding:25px;
+    border-radius:8px;
+    text-align:center;
+    box-shadow:0 0 15px rgba(0,0,0,0.3);
+}
+
+input,select,button{
+    width:100%;
+    padding:10px;
+    margin:8px 0;
+}
+
+button{
+    background:#38ada9;
+    color:white;
+    border:none;
+    border-radius:5px;
+}
+
+a{
+    color:#0a3d62;
+    text-decoration:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+<h2>Login</h2>
+
+<form onsubmit="login(event)">
+<input id="email" type="email" placeholder="Email" required>
+<input id="password" type="password" placeholder="Password" required>
+
+<select id="role" required>
+<option value="">Select Role</option>
+<option>Entrepreneur</option>
+<option>Investor</option>
+</select>
+
+<button>Login</button>
+</form>
+
+<p>New user? <a href="signup.html">Create Account</a></p>
+</div>
+
+<script>
+function login(e){
+    e.preventDefault();
+    const users=JSON.parse(localStorage.getItem("users"))||[];
+    const email=document.getElementById("email").value;
+    const password=document.getElementById("password").value;
+    const role=document.getElementById("role").value;
+
+    const user=users.find(u=>u.email===email&&u.password===password&&u.role===role);
+    if(!user){alert("Invalid credentials");return}
+    alert("Login successful");
+}
+</script>
+
+</body>
+</html>

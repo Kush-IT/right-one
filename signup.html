@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sign Up | RIGHT ONE</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:Arial;
+    background:
+        linear-gradient(rgba(56,173,169,0.88),rgba(56,173,169,0.88)),
+        url("RIGHT_ONE_LOGO.png") no-repeat center;
+    background-size:320px;
+}
+
+.box{
+    background:white;
+    width:360px;
+    padding:28px;
+    border-radius:10px;
+    text-align:center;
+    box-shadow:0 0 18px rgba(0,0,0,0.35);
+}
+
+h2{
+    color:#0a3d62;
+}
+
+input,select,button{
+    width:100%;
+    padding:10px;
+    margin:8px 0;
+}
+
+button{
+    background:#0a3d62;
+    color:white;
+    border:none;
+    border-radius:5px;
+    font-size:15px;
+}
+
+a{
+    color:#38ada9;
+    text-decoration:none;
+    font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+<h2>Create Account</h2>
+
+<form id="signupForm">
+<input id="name" placeholder="Full Name" required>
+<input id="email" type="email" placeholder="Email" required>
+<input id="password" type="password" placeholder="Password" required>
+
+<select id="role" required>
+<option value="">Select Role</option>
+<option>Entrepreneur</option>
+<option>Investor</option>
+</select>
+
+<button type="submit">Sign Up</button>
+</form>
+
+<p>Already have an account? <a href="login.html">Login</a></p>
+</div>
+
+<script>
+document.getElementById("signupForm").addEventListener("submit",e=>{
+    e.preventDefault()
+
+    const name=document.getElementById("name").value.trim()
+    const email=document.getElementById("email").value.trim()
+    const password=document.getElementById("password").value
+    const role=document.getElementById("role").value
+
+    if(name.length<3||password.length<6||!role){
+        alert("Invalid input")
+        return
+    }
+
+    const users=JSON.parse(localStorage.getItem("users"))||[]
+
+    if(users.some(u=>u.email===email)){
+        alert("User already exists")
+        return
+    }
+
+    users.push({name,email,password,role})
+    localStorage.setItem("users",JSON.stringify(users))
+
+    alert("Account created successfully")
+    window.location.href="login.html"
+})
+</script>
+
+</body>
+</html>

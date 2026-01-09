@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RIGHT ONE | Startup Investment Platform</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, sans-serif;
+}
+
+
+nav{
+    background:#0a3d62;
+    padding:15px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    color:white;
+}
+
+.nav-links a{
+    color:white;
+    text-decoration:none;
+    margin-right:15px;
+    padding:8px 16px;
+    border-radius:5px;
+    font-size:14px;
+}
+
+.login-btn{
+    border:1px solid white;
+}
+
+.signup-btn{
+    background:#38ada9;
+}
+
+.company-name{
+    font-size:24px;
+    font-weight:bold;
+}
+
+
+.hero{
+    background:linear-gradient(to right,#0a3d62,#38ada9);
+    color:white;
+    padding:80px 40px;
+    text-align:center;
+}
+
+.hero h2{
+    font-size:36px;
+    margin-bottom:20px;
+}
+
+.hero p{
+    max-width:750px;
+    margin:auto;
+    font-size:18px;
+}
+
+
+.stats{
+    padding:60px 40px;
+    background:#ffffff;
+    text-align:center;
+}
+
+.stats h2{
+    margin-bottom:40px;
+    color:#0a3d62;
+}
+
+.stats-box{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-around;
+}
+
+.stat{
+    width:220px;
+    background:#f4f4f4;
+    margin:15px;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 8px rgba(0,0,0,0.1);
+}
+
+.stat h3{
+    font-size:32px;
+    color:#38ada9;
+    margin-bottom:10px;
+}
+
+.stat p{
+    font-size:14px;
+    color:#333;
+}
+
+
+.features{
+    padding:60px 40px;
+    background:#f4f4f4;
+    text-align:center;
+}
+
+.cards{
+    display:flex;
+    justify-content:space-around;
+    flex-wrap:wrap;
+}
+
+.card{
+    background:white;
+    width:300px;
+    padding:25px;
+    margin:15px;
+    border-radius:8px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+.card h3{
+    color:#0a3d62;
+    margin-bottom:10px;
+}
+
+
+.about{
+    padding:60px 40px;
+    text-align:center;
+}
+
+.about p{
+    max-width:850px;
+    margin:auto;
+    font-size:16px;
+}
+
+
+footer{
+    background:#0a3d62;
+    color:white;
+    text-align:center;
+    padding:15px;
+}
+</style>
+</head>
+
+<body>
+
+
+<nav>
+    <div class="nav-links">
+        <a href="login.html" class="login-btn">Login</a>
+        <a href="signup.html" class="signup-btn">Sign Up</a>
+    </div>
+    <div class="company-name">RIGHT ONE</div>
+</nav>
+
+
+<section class="hero">
+    <h2>Where Startups Meet the Right Investors</h2>
+    <p>
+        RIGHT ONE is a Shark Tank–inspired digital platform that connects
+        innovative entrepreneurs with verified investors to build successful businesses.
+    </p>
+</section>
+
+
+<section class="stats">
+    <h2>RIGHT ONE – Platform Insights</h2>
+
+    <div class="stats-box">
+        <div class="stat">
+            <h3 id="users">0</h3>
+            <p>Total Active Users</p>
+        </div>
+
+        <div class="stat">
+            <h3 id="startups">0</h3>
+            <p>Registered Startups</p>
+        </div>
+
+        <div class="stat">
+            <h3 id="investors">0</h3>
+            <p>Verified Investors</p>
+        </div>
+
+        <div class="stat">
+            <h3 id="deals">0</h3>
+            <p>Successful Deals</p>
+        </div>
+
+        <div class="stat">
+            <h3 id="investment">₹0 Cr</h3>
+            <p>Total Investment Raised</p>
+        </div>
+
+        <div class="stat">
+            <h3 id="success">0%</h3>
+            <p>Startup Success Rate</p>
+        </div>
+    </div>
+</section>
+
+
+<section class="features">
+    <h2>Why RIGHT ONE?</h2>
+
+    <div class="cards">
+        <div class="card">
+            <h3>For Entrepreneurs</h3>
+            <p>
+                Pitch your startup ideas, gain visibility,
+                and receive funding offers from trusted investors.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>For Investors</h3>
+            <p>
+                Discover innovative startups, analyze business models,
+                and invest in high-potential ventures.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Secure & Transparent</h3>
+            <p>
+                Role-based access, structured deals,
+                and transparent investment workflow.
+            </p>
+        </div>
+    </div>
+</section>
+
+
+<section class="about">
+    <h2>About RIGHT ONE</h2>
+    <p>
+        RIGHT ONE is an academic project designed to demonstrate full-stack web development,
+        role-based authentication, and real-world system design inspired by the Shark Tank model.
+        The platform promotes entrepreneurship, innovation, and digital investment transparency.
+    </p>
+</section>
+
+
+<footer>
+    <p>© 2026 RIGHT ONE | Academic Project</p>
+</footer>
+
+
+<script>
+const platformData = {
+    users: 1250,
+    startups: 320,
+    investors: 180,
+    deals: 95,
+    investment: 48,
+    success: 62
+};
+
+document.getElementById("users").innerText = platformData.users;
+document.getElementById("startups").innerText = platformData.startups;
+document.getElementById("investors").innerText = platformData.investors;
+document.getElementById("deals").innerText = platformData.deals;
+document.getElementById("investment").innerText = "₹" + platformData.investment + " Cr";
+document.getElementById("success").innerText = platformData.success + "%";
+</script>
+
+</body>
+</html>
