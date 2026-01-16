@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Funding Charts</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<h1>Funding Statistics</h1>
+<canvas id="chart" width="400"></canvas>
+
+<script>
+const startups=JSON.parse(localStorage.getItem("startups"))||[]
+
+const labels=startups.map(s=>s.startupName)
+const data=startups.map(s=>Number(s.fund))
+
+new Chart(document.getElementById("chart"),{
+type:"bar",
+data:{
+labels:labels,
+datasets:[{
+label:"Funding Required (₹ Cr)",
+data:data,
+backgroundColor:"#38ada9"
+}]
+}
+})
+</script>
+</body>
+</html>

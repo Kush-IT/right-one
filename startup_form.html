@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Startup KYC | RIGHT ONE</title>
+
+<style>
+*{box-sizing:border-box;font-family:Arial}
+
+body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding:40px 0;
+    background:linear-gradient(to right,#38ada9,#0a3d62)
+}
+
+.box{
+    background:white;
+    width:520px;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 0 25px rgba(0,0,0,0.3)
+}
+
+h2{
+    text-align:center;
+    color:#0a3d62;
+    margin-bottom:20px
+}
+
+label{
+    font-size:14px;
+    color:#333
+}
+
+input,select,button{
+    width:100%;
+    padding:10px;
+    margin:6px 0 14px 0
+}
+
+button{
+    background:#0a3d62;
+    color:white;
+    border:none;
+    border-radius:6px;
+    font-size:15px
+}
+
+.success{
+    color:green;
+    text-align:center;
+    margin-top:10px
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+<h2>Startup Details & KYC</h2>
+
+<form id="startupForm">
+
+<label>Startup Name</label>
+<input id="startupName" required>
+
+<label>Founder Name</label>
+<input id="founder" required>
+
+<label>Official Email</label>
+<input id="email" type="email" required>
+
+<label>Contact Number</label>
+<input id="mobile" required>
+
+<label>Business Sector</label>
+<input id="sector" required>
+
+<label>Startup Stage</label>
+<input id="stage" required>
+
+<label>Funding Required (₹ Cr)</label>
+<input id="fund" required>
+
+<label>Registered Address</label>
+<input id="location" required>
+
+<label>Company Type</label>
+<select id="companyType" required>
+<option value="">Select Company Type</option>
+<option>Private Limited</option>
+<option>LLP</option>
+<option>Sole Proprietorship</option>
+<option>Partnership</option>
+</select>
+
+<label>Startup Logo</label>
+<input type="file" id="logo" accept="image/*" required>
+
+<label>Company Registration ID Proof</label>
+<input type="file" id="companyId" accept="image/*,application/pdf" required>
+
+<label>Bank Statement / Financial Proof</label>
+<input type="file" id="bankProof" accept="image/*,application/pdf" required>
+
+<label>Pitch Deck / Business Document</label>
+<input type="file" id="pitch" accept="image/*,application/pdf" required>
+
+<button type="submit">Submit Startup & KYC</button>
+
+<p class="success" id="msg"></p>
+
+</form>
+</div>
+
+<script>
+if(localStorage.getItem("currentRole")!=="startup"){
+    location.href="signup.html"
+}
+
+function toBase64(file){
+    return new Promise(resolve=>{
+        const reader=new FileReader()
+        reader.onload=()=>resolve(reader.result)
+        reader.readAsDataURL(file)
+    })
+}
+
+document.getElementById("startupForm").addEventListener("submit",async e=>{
+    e.preventDefault()
+
+    const startups=JSON.parse(localStorage.getItem("startups"))||[]
+
+    startups.push({
+        startupName:startupName.value,
+        founder:founder.value,
+        email:email.value,
+        mobile:mobile.value,
+        sector:sector.value,
+        stage:stage.value,
+        fund:fund.value,
+        location:location.value,
+        companyType:companyType.value,
+        logo:await toBase64(logo.files[0]),
+        companyId:await toBase64(companyId.files[0]),
+        bankProof:await toBase64(bankProof.files[0]),
+        pitch:await toBase64(pitch.files[0]),
+        kycStatus:"Pending",
+        submittedAt:new Date().toLocaleString()
+    })
+
+    localStorage.setItem("startups",JSON.stringify(startups))
+    msg.innerText="Startup details and KYC submitted successfully"
+    e.target.reset()
+})
+</script>
+
+</body>
+</html>

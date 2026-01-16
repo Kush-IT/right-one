@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Investor Dashboard | RIGHT ONE</title>
+
+<style>
+*{box-sizing:border-box;font-family:Arial}
+
+body{
+    margin:0;
+    min-height:100vh;
+    background:#f2f4f7;
+    padding:30px
+}
+
+h1{
+    color:#0a3d62;
+    text-align:center;
+    margin-bottom:30px
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-bottom:30px
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 10px 20px rgba(0,0,0,0.15);
+    text-align:center
+}
+
+.card h2{
+    color:#38ada9;
+    margin-bottom:10px
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white
+}
+
+th,td{
+    padding:12px;
+    border:1px solid #ddd;
+    font-size:14px
+}
+
+th{
+    background:#0a3d62;
+    color:white
+}
+</style>
+</head>
+
+<body>
+
+<h1>Investor Dashboard</h1>
+
+<div class="cards">
+<div class="card">
+<h2>Total Startups</h2>
+<p id="totalStartups">0</p>
+</div>
+
+<div class="card">
+<h2>Verified Startups</h2>
+<p id="verifiedStartups">0</p>
+</div>
+
+<div class="card">
+<h2>Total Investment Requests</h2>
+<p id="totalRequests">0</p>
+</div>
+</div>
+
+<h2>Available Startups</h2>
+
+<table>
+<thead>
+<tr>
+<th>Startup Name</th>
+<th>Sector</th>
+<th>Stage</th>
+<th>Funding Required (₹ Cr)</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody id="startupTable"></tbody>
+</table>
+
+<script>
+const startups = JSON.parse(localStorage.getItem("startups")) || []
+
+document.getElementById("totalStartups").innerText = startups.length
+document.getElementById("verifiedStartups").innerText =
+    startups.filter(s=>s.kycStatus==="Approved").length
+document.getElementById("totalRequests").innerText = startups.length
+
+const table = document.getElementById("startupTable")
+
+startups.forEach(s=>{
+    table.innerHTML += `
+    <tr>
+        <td>${s.startupName}</td>
+        <td>${s.sector}</td>
+        <td>${s.stage}</td>
+        <td>${s.fund}</td>
+        <td>${s.kycStatus || "Pending"}</td>
+    </tr>`
+})
+</script>
+
+</body>
+</html>

@@ -2,221 +2,95 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>RIGHT ONE | Startup Investment Platform</title>
+<title>Sign Up | RIGHT ONE</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-
-nav{
-    background:#0a3d62;
-    padding:15px 40px;
+body{
+    margin:0;
+    height:100vh;
     display:flex;
-    justify-content:space-between;
+    justify-content:center;
     align-items:center;
-    color:white
+    font-family:Arial;
+    background:linear-gradient(to right,#0a3d62,#38ada9)
 }
 
-.nav-links a{
-    color:white;
-    text-decoration:none;
-    margin-right:15px;
-    padding:8px 16px;
-    border-radius:5px;
-    font-size:14px
-}
-
-.login-btn{border:1px solid white}
-.signup-btn{background:#38ada9}
-.company-name{font-size:24px;font-weight:bold}
-
-.hero{
-    background:linear-gradient(to right,#0a3d62,#38ada9);
-    color:white;
-    padding:80px 40px;
-    text-align:center
-}
-
-.hero h2{font-size:36px;margin-bottom:20px}
-.hero p{max-width:800px;margin:auto;font-size:18px}
-
-.stats{padding:60px 40px;text-align:center}
-.stats h2{margin-bottom:40px;color:#0a3d62}
-
-.stats-box{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center
-}
-
-.stat{
-    width:220px;
-    background:#f4f4f4;
-    margin:15px;
-    padding:25px;
-    border-radius:10px;
-    box-shadow:0 0 8px rgba(0,0,0,0.1)
-}
-
-.stat h3{font-size:32px;color:#38ada9}
-
-.investors{
-    padding:60px 40px;
-    background:#f9f9f9;
-    text-align:center
-}
-
-.investors h2{color:#0a3d62}
-.subtitle{color:#555;margin:15px 0 40px}
-
-.investor-cards{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center
-}
-
-.investor{
+.box{
     background:white;
-    width:280px;
-    margin:15px;
-    padding:20px;
+    width:380px;
+    padding:30px;
     border-radius:10px;
-    box-shadow:0 0 10px rgba(0,0,0,0.1);
-    text-align:left
+    text-align:center;
+    box-shadow:0 0 20px rgba(0,0,0,0.3)
 }
 
-.investor h3{color:#0a3d62;margin-bottom:10px}
+h2{color:#0a3d62}
 
-.badge{
-    display:inline-block;
-    margin-top:10px;
-    padding:5px 10px;
+input,select,button{
+    width:100%;
+    padding:10px;
+    margin:8px 0
+}
+
+button{
     background:#38ada9;
     color:white;
-    font-size:12px;
-    border-radius:5px
-}
-
-.about{padding:60px 40px;text-align:center}
-.about p{max-width:900px;margin:auto}
-
-footer{
-    background:#0a3d62;
-    color:white;
-    text-align:center;
-    padding:15px
+    border:none;
+    border-radius:5px;
+    font-size:15px
 }
 </style>
 </head>
 
 <body>
 
-<nav>
-    <div class="nav-links">
-        <a href="login.html" class="login-btn">Login</a>
-        <a href="signup.html" class="signup-btn">Sign Up</a>
-    </div>
-    <div class="company-name">RIGHT ONE</div>
-</nav>
+<div class="box">
+<h2>Create Account</h2>
 
-<section class="hero">
-    <h2>Where Startups Meet the Right Investors</h2>
-    <p>RIGHT ONE connects innovative founders with verified young investors through a transparent digital platform</p>
-</section>
+<form id="signupForm">
+<input id="name" placeholder="Full Name" required>
+<input id="email" type="email" placeholder="Email" required>
+<input id="password" type="password" placeholder="Password" required>
 
-<section class="stats">
-    <h2>Platform Insights</h2>
-    <div class="stats-box">
-        <div class="stat"><h3 id="users">0</h3><p>Total Users</p></div>
-        <div class="stat"><h3 id="startups">0</h3><p>Startups</p></div>
-        <div class="stat"><h3 id="investors">0</h3><p>Investors</p></div>
-        <div class="stat"><h3 id="deals">0</h3><p>Deals Closed</p></div>
-        <div class="stat"><h3 id="investment">₹0</h3><p>Total Investment (Cr)</p></div>
-    </div>
-</section>
+<select id="role" required>
+<option value="">Select Role</option>
+<option value="investor">Investor</option>
+<option value="startup">Startup</option>
+</select>
 
-<section class="investors">
-    <h2>Verified Young Investors (Age 25–35)</h2>
-    <p class="subtitle">Next-generation Indian founders investing in startups</p>
-
-
-::contentReference[oaicite:0]{index=0}
-
-
-    <div class="investor-cards">
-        <div class="investor">
-            <h3>:contentReference[oaicite:1]{index=1}</h3>
-            <p>Focus: Hospitality & Tech</p>
-            <p>Deals: 21</p>
-            <p>Investment: ₹85 Cr</p>
-            <span class="badge">Verified</span>
-        </div>
-
-        <div class="investor">
-            <h3>:contentReference[oaicite:2]{index=2}</h3>
-            <p>Focus: Mobility & EV</p>
-            <p>Deals: 17</p>
-            <p>Investment: ₹72 Cr</p>
-            <span class="badge">Verified</span>
-        </div>
-
-        <div class="investor">
-            <h3>:contentReference[oaicite:3]{index=3}</h3>
-            <p>Focus: FinTech</p>
-            <p>Deals: 19</p>
-            <p>Investment: ₹90 Cr</p>
-            <span class="badge">Verified</span>
-        </div>
-
-        <div class="investor">
-            <h3>:contentReference[oaicite:4]{index=4}</h3>
-            <p>Focus: EdTech</p>
-            <p>Deals: 15</p>
-            <p>Investment: ₹60 Cr</p>
-            <span class="badge">Verified</span>
-        </div>
-
-        <div class="investor">
-            <h3>:contentReference[oaicite:5]{index=5}</h3>
-            <p>Focus: SaaS & FinTech</p>
-            <p>Deals: 13</p>
-            <p>Investment: ₹55 Cr</p>
-            <span class="badge">Verified</span>
-        </div>
-    </div>
-</section>
-
-<section class="about">
-    <h2>About RIGHT ONE</h2>
-    <p>RIGHT ONE is an academic full-stack project inspired by Shark Tank, designed to promote entrepreneurship through a data-driven startup investment ecosystem</p>
-</section>
-
-<footer>
-    <p>© 2026 RIGHT ONE | Academic Project</p>
-</footer>
+<button type="submit">Continue</button>
+</form>
+</div>
 
 <script>
-const data={users:1250,startups:320,investors:180,deals:95,investment:48}
+document.getElementById("signupForm").addEventListener("submit",e=>{
+    e.preventDefault()
 
-function animate(id,value,prefix=""){
-    let c=0
-    const e=document.getElementById(id)
-    const s=Math.ceil(value/50)
-    const t=setInterval(()=>{
-        c+=s
-        if(c>=value){
-            e.innerText=prefix+value
-            clearInterval(t)
-        }else{
-            e.innerText=prefix+c
-        }
-    },30)
-}
+    const name=document.getElementById("name").value.trim()
+    const email=document.getElementById("email").value.trim()
+    const password=document.getElementById("password").value
+    const role=document.getElementById("role").value
 
-animate("users",data.users)
-animate("startups",data.startups)
-animate("investors",data.investors)
-animate("deals",data.deals)
-animate("investment",data.investment,"₹")
+    if(name.length<3||password.length<6||!role){
+        alert("Invalid input")
+        return
+    }
+
+    const users=JSON.parse(localStorage.getItem("users"))||[]
+
+    if(users.some(u=>u.email===email)){
+        alert("User already exists")
+        return
+    }
+
+    users.push({name,email,password,role})
+    localStorage.setItem("users",JSON.stringify(users))
+    localStorage.setItem("currentRole",role)
+
+    role==="investor"
+        ? location.href="investor_form.html"
+        : location.href="startup_form.html"
+})
 </script>
 
 </body>

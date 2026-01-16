@@ -2,7 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Sign Up | RIGHT ONE</title>
+<title>Create Account | RIGHT ONE</title>
+
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+emailjs.init("PUBLIC_KEY")
+</script>
 
 <style>
 body{
@@ -12,43 +17,30 @@ body{
     justify-content:center;
     align-items:center;
     font-family:Arial;
-    background:
-        linear-gradient(rgba(56,173,169,0.88),rgba(56,173,169,0.88)),
-        url("RIGHT_ONE_LOGO.png") no-repeat center;
-    background-size:320px;
+    background:linear-gradient(to right,#0a3d62,#38ada9)
 }
-
 .box{
     background:white;
-    width:360px;
-    padding:28px;
-    border-radius:10px;
+    width:420px;
+    padding:32px;
+    border-radius:14px;
     text-align:center;
-    box-shadow:0 0 18px rgba(0,0,0,0.35);
+    box-shadow:0 15px 35px rgba(0,0,0,0.25)
 }
-
-h2{
-    color:#0a3d62;
-}
-
+h2{color:#0a3d62}
 input,select,button{
     width:100%;
-    padding:10px;
-    margin:8px 0;
+    padding:12px;
+    margin:10px 0;
+    font-size:14px
 }
-
 button{
-    background:#0a3d62;
+    background:#38ada9;
     color:white;
     border:none;
-    border-radius:5px;
+    border-radius:8px;
     font-size:15px;
-}
-
-a{
-    color:#38ada9;
-    text-decoration:none;
-    font-size:14px;
+    cursor:pointer
 }
 </style>
 </head>
@@ -58,50 +50,65 @@ a{
 <div class="box">
 <h2>Create Account</h2>
 
-<form id="signupForm">
-<input id="name" placeholder="Full Name" required>
-<input id="email" type="email" placeholder="Email" required>
-<input id="password" type="password" placeholder="Password" required>
+<input id="name" placeholder="Full Name">
+<input id="email" type="email" placeholder="Email Address">
+<input id="password" type="password" placeholder="Password">
+<input id="confirm" type="password" placeholder="Confirm Password">
 
-<select id="role" required>
+<select id="role">
 <option value="">Select Role</option>
-<option>Entrepreneur</option>
-<option>Investor</option>
+<option value="investor">Investor</option>
+<option value="startup">Startup</option>
 </select>
 
-<button type="submit">Sign Up</button>
-</form>
-
-<p>Already have an account? <a href="login.html">Login</a></p>
+<button type="button" onclick="sendOTP()">Send OTP</button>
 </div>
 
 <script>
-document.getElementById("signupForm").addEventListener("submit",e=>{
-    e.preventDefault()
+function generateOTP(){
+    return Math.floor(100000 + Math.random() * 900000)
+}
 
-    const name=document.getElementById("name").value.trim()
-    const email=document.getElementById("email").value.trim()
-    const password=document.getElementById("password").value
-    const role=document.getElementById("role").value
+function sendOTP(){
+    const nameEl = document.getElementById("name")
+    const emailEl = document.getElementById("email")
+    const passEl = document.getElementById("password")
+    const confirmEl = document.getElementById("confirm")
+    const roleEl = document.getElementById("role")
 
-    if(name.length<3||password.length<6||!role){
-        alert("Invalid input")
+    const nameVal = nameEl.value.trim()
+    const emailVal = emailEl.value.trim()
+    const passVal = passEl.value
+    const confirmVal = confirmEl.value
+    const roleVal = roleEl.value
+
+    if(nameVal==="" || emailVal==="" || passVal==="" || confirmVal==="" || roleVal===""){
+        alert("Fill all fields")
         return
     }
 
-    const users=JSON.parse(localStorage.getItem("users"))||[]
-
-    if(users.some(u=>u.email===email)){
-        alert("User already exists")
+    if(passVal !== confirmVal){
+        alert("Passwords do not match")
         return
     }
 
-    users.push({name,email,password,role})
-    localStorage.setItem("users",JSON.stringify(users))
+    const otp = generateOTP()
 
-    alert("Account created successfully")
-    window.location.href="login.html"
-})
+    localStorage.setItem("signupData", JSON.stringify({
+        name: nameVal,
+        email: emailVal,
+        password: passVal,
+        role: roleVal,
+        otp: otp
+    }))
+
+    emailjs.send("SERVICE_ID","TEMPLATE_ID",{
+        to_email: emailVal,
+        otp: otp
+    }).catch(()=>{})
+
+    window.location.href = "otp_verify.html"
+}
 </script>
 
 </body>

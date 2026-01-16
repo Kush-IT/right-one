@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Investor KYC | RIGHT ONE</title>
+
+<style>
+*{box-sizing:border-box;font-family:Arial}
+
+body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding:40px 0;
+    background:linear-gradient(to right,#0a3d62,#38ada9)
+}
+
+.box{
+    background:white;
+    width:520px;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 0 25px rgba(0,0,0,0.3)
+}
+
+h2{
+    text-align:center;
+    color:#0a3d62;
+    margin-bottom:20px
+}
+
+label{
+    font-size:14px;
+    color:#333
+}
+
+input,select,button{
+    width:100%;
+    padding:10px;
+    margin:6px 0 14px 0
+}
+
+button{
+    background:#38ada9;
+    color:white;
+    border:none;
+    border-radius:6px;
+    font-size:15px
+}
+
+.success{
+    color:green;
+    text-align:center;
+    margin-top:10px
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+<h2>Investor Details & KYC</h2>
+
+<form id="investorForm">
+
+<label>Full Name</label>
+<input id="name" required>
+
+<label>Age (25–35)</label>
+<input id="age" type="number" min="25" max="35" required>
+
+<label>Email Address</label>
+<input id="email" type="email" required>
+
+<label>Mobile Number</label>
+<input id="mobile" required>
+
+<label>Experience (Years)</label>
+<input id="experience" required>
+
+<label>Investment Interest</label>
+<input id="interest" required>
+
+<label>Investment Budget (₹ Cr)</label>
+<input id="budget" required>
+
+<label>Residential Address</label>
+<input id="address" required>
+
+<label>Investor Type</label>
+<select id="type" required>
+<option value="">Select Type</option>
+<option>Angel Investor</option>
+<option>Venture Capitalist</option>
+<option>Seed Investor</option>
+</select>
+
+<label>Profile Photo</label>
+<input type="file" id="photo" accept="image/*" required>
+
+<label>Government ID Proof (Aadhar / PAN)</label>
+<input type="file" id="idProof" accept="image/*,application/pdf" required>
+
+<label>Bank Statement / Financial Proof</label>
+<input type="file" id="bankProof" accept="image/*,application/pdf" required>
+
+<button type="submit">Submit Investor & KYC</button>
+
+<p class="success" id="msg"></p>
+
+</form>
+</div>
+
+<script>
+if(localStorage.getItem("currentRole")!=="investor"){
+    location.href="signup.html"
+}
+
+function toBase64(file){
+    return new Promise(r=>{
+        const reader=new FileReader()
+        reader.onload=()=>r(reader.result)
+        reader.readAsDataURL(file)
+    })
+}
+
+document.getElementById("investorForm").addEventListener("submit",async e=>{
+    e.preventDefault()
+
+    const investors=JSON.parse(localStorage.getItem("investors"))||[]
+
+    investors.push({
+        name:name.value,
+        age:age.value,
+        email:email.value,
+        mobile:mobile.value,
+        experience:experience.value,
+        interest:interest.value,
+        budget:budget.value,
+        address:address.value,
+        type:type.value,
+        photo:await toBase64(photo.files[0]),
+        idProof:await toBase64(idProof.files[0]),
+        bankProof:await toBase64(bankProof.files[0]),
+        kycStatus:"Pending",
+        submittedAt:new Date().toLocaleString()
+    })
+
+    localStorage.setItem("investors",JSON.stringify(investors))
+    msg.innerText="Investor details and KYC submitted successfully"
+    e.target.reset()
+})
+</script>
+
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>OTP Verification | RIGHT ONE</title>
+
+<style>
+body{
+    margin:0;height:100vh;display:flex;justify-content:center;align-items:center;
+    font-family:Arial;background:linear-gradient(to right,#38ada9,#0a3d62)
+}
+.box{
+    background:white;width:360px;padding:30px;border-radius:12px;
+    text-align:center;box-shadow:0 0 20px rgba(0,0,0,0.3)
+}
+input{
+    width:100%;padding:12px;font-size:18px;
+    text-align:center;letter-spacing:4px;margin-bottom:20px
+}
+button{
+    width:100%;padding:12px;
+    background:#0a3d62;color:white;border:none;border-radius:6px
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+<h2>OTP Verification</h2>
+<p>Enter the OTP sent to your email</p>
+
+<input id="otpInput" placeholder="Enter OTP">
+<button onclick="verifyOTP()">Verify OTP</button>
+</div>
+
+<script>
+function verifyOTP(){
+    const data = JSON.parse(localStorage.getItem("signupData"))
+
+    if(!data){
+        location.href = "signup.html"
+        return
+    }
+
+    if(otpInput.value != data.otp){
+        alert("Invalid OTP")
+        return
+    }
+
+    const users = JSON.parse(localStorage.getItem("users")) || []
+    users.push({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        role: data.role
+    })
+
+    localStorage.setItem("users", JSON.stringify(users))
+    localStorage.setItem("currentRole", data.role)
+    localStorage.removeItem("signupData")
+
+    data.role === "investor"
+        ? location.href = "investor_form.html"
+        : location.href = "startup_form.html"
+}
+</script>
+
+</body>
+</html>

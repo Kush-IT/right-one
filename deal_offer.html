@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Deals | RIGHT ONE</title>
+<style>
+body{font-family:Arial;padding:30px}
+select,input,button{padding:10px;margin:5px}
+</style>
+</head>
+<body>
+
+<h1>Create Investment Offer</h1>
+
+<select id="investor"></select>
+<select id="startup"></select>
+<input id="amount" placeholder="Offer Amount ₹ Cr">
+<button onclick="createDeal()">Create Deal</button>
+
+<h2>Deals</h2>
+<ul id="dealList"></ul>
+
+<script>
+let investors=JSON.parse(localStorage.getItem("investors"))||[]
+let startups=JSON.parse(localStorage.getItem("startups"))||[]
+let deals=JSON.parse(localStorage.getItem("deals"))||[]
+
+investors.forEach(i=>{
+investor.innerHTML+=`<option>${i.name}</option>`
+})
+
+startups.forEach(s=>{
+startup.innerHTML+=`<option>${s.startupName}</option>`
+})
+
+function createDeal(){
+deals.push({
+investor:investor.value,
+startup:startup.value,
+amount:amount.value,
+status:"Pending"
+})
+localStorage.setItem("deals",JSON.stringify(deals))
+renderDeals()
+}
+
+function renderDeals(){
+dealList.innerHTML=""
+deals.forEach(d=>{
+dealList.innerHTML+=`<li>${d.investor} → ${d.startup} : ₹${d.amount} Cr (${d.status})</li>`
+})
+}
+
+renderDeals()
+</script>
+</body>
+</html>
