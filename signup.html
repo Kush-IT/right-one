@@ -2,45 +2,53 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Create Account | RIGHT ONE</title>
-
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-<script>
-emailjs.init("PUBLIC_KEY")
-</script>
+<title>Sign Up | RIGHT ONE</title>
 
 <style>
+*{box-sizing:border-box;font-family:Arial}
+
 body{
     margin:0;
     height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
-    font-family:Arial;
     background:linear-gradient(to right,#0a3d62,#38ada9)
 }
+
 .box{
     background:white;
     width:420px;
     padding:32px;
     border-radius:14px;
-    text-align:center;
-    box-shadow:0 15px 35px rgba(0,0,0,0.25)
+    box-shadow:0 15px 35px rgba(0,0,0,0.25);
+    text-align:center
 }
-h2{color:#0a3d62}
+
+h2{
+    color:#0a3d62;
+    margin-bottom:20px
+}
+
 input,select,button{
     width:100%;
     padding:12px;
     margin:10px 0;
-    font-size:14px
+    font-size:14px;
+    border-radius:6px;
+    border:1px solid #ccc
 }
+
 button{
     background:#38ada9;
     color:white;
     border:none;
-    border-radius:8px;
     font-size:15px;
     cursor:pointer
+}
+
+button:hover{
+    background:#2fa39f
 }
 </style>
 </head>
@@ -61,53 +69,41 @@ button{
 <option value="startup">Startup</option>
 </select>
 
-<button type="button" onclick="sendOTP()">Send OTP</button>
+<button type="button" onclick="signup()">Continue</button>
 </div>
 
 <script>
-function generateOTP(){
-    return Math.floor(100000 + Math.random() * 900000)
-}
+function signup(){
+    const nameEl=document.getElementById("name")
+    const emailEl=document.getElementById("email")
+    const passEl=document.getElementById("password")
+    const confirmEl=document.getElementById("confirm")
+    const roleEl=document.getElementById("role")
 
-function sendOTP(){
-    const nameEl = document.getElementById("name")
-    const emailEl = document.getElementById("email")
-    const passEl = document.getElementById("password")
-    const confirmEl = document.getElementById("confirm")
-    const roleEl = document.getElementById("role")
+    const name=nameEl.value.trim()
+    const email=emailEl.value.trim()
+    const password=passEl.value
+    const confirm=confirmEl.value
+    const role=roleEl.value
 
-    const nameVal = nameEl.value.trim()
-    const emailVal = emailEl.value.trim()
-    const passVal = passEl.value
-    const confirmVal = confirmEl.value
-    const roleVal = roleEl.value
-
-    if(nameVal==="" || emailVal==="" || passVal==="" || confirmVal==="" || roleVal===""){
+    if(name===""||email===""||password===""||confirm===""||role===""){
         alert("Fill all fields")
         return
     }
 
-    if(passVal !== confirmVal){
+    if(password!==confirm){
         alert("Passwords do not match")
         return
     }
 
-    const otp = generateOTP()
+    const users=JSON.parse(localStorage.getItem("users"))||[]
+    users.push({name,email,password,role})
+    localStorage.setItem("users",JSON.stringify(users))
+    localStorage.setItem("currentRole",role)
 
-    localStorage.setItem("signupData", JSON.stringify({
-        name: nameVal,
-        email: emailVal,
-        password: passVal,
-        role: roleVal,
-        otp: otp
-    }))
-
-    emailjs.send("SERVICE_ID","TEMPLATE_ID",{
-        to_email: emailVal,
-        otp: otp
-    }).catch(()=>{})
-
-    window.location.href = "otp_verify.html"
+    role==="investor"
+        ? location.href="investor_form.html"
+        : location.href="startup_form.html"
 }
 </script>
 

@@ -11,13 +11,13 @@ body{
     margin:0;
     min-height:100vh;
     background:#f2f4f7;
-    padding:30px
+    padding:25px
 }
 
 h1{
     color:#0a3d62;
     text-align:center;
-    margin-bottom:30px
+    margin-bottom:25px
 }
 
 .cards{
@@ -30,14 +30,33 @@ h1{
 .card{
     background:white;
     padding:20px;
-    border-radius:12px;
-    box-shadow:0 10px 20px rgba(0,0,0,0.15);
+    border-radius:14px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.15);
     text-align:center
 }
 
 .card h2{
     color:#38ada9;
     margin-bottom:10px
+}
+
+.filters{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px
+}
+
+input,select,button{
+    padding:10px;
+    border-radius:6px;
+    border:1px solid #ccc
+}
+
+button{
+    background:#0a3d62;
+    color:white;
+    cursor:pointer;
+    border:none
 }
 
 table{
@@ -56,6 +75,31 @@ th{
     background:#0a3d62;
     color:white
 }
+
+.badge{
+    padding:4px 8px;
+    background:#38ada9;
+    color:white;
+    border-radius:4px;
+    font-size:12px
+}
+
+.modal{
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    background:rgba(0,0,0,0.6);
+    display:none;
+    justify-content:center;
+    align-items:center
+}
+
+.modal-box{
+    background:white;
+    padding:25px;
+    width:400px;
+    border-radius:10px
+}
 </style>
 </head>
 
@@ -64,57 +108,144 @@ th{
 <h1>Investor Dashboard</h1>
 
 <div class="cards">
-<div class="card">
-<h2>Total Startups</h2>
-<p id="totalStartups">0</p>
+<div class="card"><h2 id="totalStartups">0</h2><p>Total Startups</p></div>
+<div class="card"><h2 id="verifiedStartups">0</h2><p>Verified Startups</p></div>
+<div class="card"><h2 id="totalDeals">0</h2><p>Total Deals</p></div>
+<div class="card"><h2 id="approvedDeals">0</h2><p>Approved Deals</p></div>
 </div>
 
-<div class="card">
-<h2>Verified Startups</h2>
-<p id="verifiedStartups">0</p>
+<div class="filters">
+<input id="search" placeholder="Search Startup">
+<select id="sectorFilter">
+<option value="">All Sectors</option>
+<option>FinTech</option>
+<option>HealthTech</option>
+<option>EdTech</option>
+<option>E-Commerce</option>
+</select>
+<button onclick="applyFilter()">Filter</button>
 </div>
-
-<div class="card">
-<h2>Total Investment Requests</h2>
-<p id="totalRequests">0</p>
-</div>
-</div>
-
-<h2>Available Startups</h2>
 
 <table>
 <thead>
 <tr>
-<th>Startup Name</th>
+<th>Startup</th>
 <th>Sector</th>
 <th>Stage</th>
-<th>Funding Required (₹ Cr)</th>
+<th>Fund (₹ Cr)</th>
 <th>Status</th>
+<th>Action</th>
 </tr>
 </thead>
 <tbody id="startupTable"></tbody>
 </table>
 
+<div class="modal" id="dealModal">
+<div class="modal-box">
+<h3>Create Deal</h3>
+<p id="startupName"></p>
+<input id="dealAmount" placeholder="Investment Amount ₹ Cr">
+<button onclick="submitDeal()">Submit</button>
+<button onclick="closeModal()">Cancel</button>
+</div>
+</div>
+
 <script>
-const startups = JSON.parse(localStorage.getItem("startups")) || []
-
-document.getElementById("totalStartups").innerText = startups.length
-document.getElementById("verifiedStartups").innerText =
-    startups.filter(s=>s.kycStatus==="Approved").length
-document.getElementById("totalRequests").innerText = startups.length
-
-const table = document.getElementById("startupTable")
-
-startups.forEach(s=>{
-    table.innerHTML += `
-    <tr>
-        <td>${s.startupName}</td>
-        <td>${s.sector}</td>
-        <td>${s.stage}</td>
-        <td>${s.fund}</td>
-        <td>${s.kycStatus || "Pending"}</td>
-    </tr>`
+function seedData(){
+if(!localStorage.getItem("startups")){
+const sectors=["FinTech","HealthTech","EdTech","E-Commerce"]
+const stages=["Idea","Seed","Growth","Scale"]
+const startups=[]
+for(let i=1;i<=8;i++){
+startups.push({
+startupName:"Startup "+i,
+sector:sectors[Math.floor(Math.random()*sectors.length)],
+stage:stages[Math.floor(Math.random()*stages.length)],
+fund:Math.floor(Math.random()*50)+5,
+kycStatus:Math.random()>0.4?"Approved":"Pending"
 })
+}
+localStorage.setItem("startups",JSON.stringify(startups))
+}
+if(!localStorage.getItem("deals")){
+const deals=[]
+for(let i=1;i<=4;i++){
+deals.push({
+startup:"Startup "+i,
+amount:Math.floor(Math.random()*20)+2,
+status:["Pending","Accepted","Rejected"][Math.floor(Math.random()*3)],
+time:new Date().toLocaleString()
+})
+}
+localStorage.setItem("deals",JSON.stringify(deals))
+}
+}
+
+seedData()
+
+let startups=JSON.parse(localStorage.getItem("startups"))||[]
+let deals=JSON.parse(localStorage.getItem("deals"))||[]
+let selectedStartup=null
+
+function loadStats(){
+totalStartups.innerText=startups.length
+verifiedStartups.innerText=startups.filter(s=>s.kycStatus==="Approved").length
+totalDeals.innerText=deals.length
+approvedDeals.innerText=deals.filter(d=>d.status==="Accepted").length
+}
+
+function renderTable(list){
+startupTable.innerHTML=""
+list.forEach(s=>{
+startupTable.innerHTML+=`
+<tr>
+<td>${s.startupName}</td>
+<td>${s.sector}</td>
+<td>${s.stage}</td>
+<td>${s.fund}</td>
+<td>${s.kycStatus==="Approved"?'<span class="badge">Verified</span>':'Pending'}</td>
+<td><button onclick="openDeal('${s.startupName}')">Create Deal</button></td>
+</tr>`
+})
+}
+
+function applyFilter(){
+const key=search.value.toLowerCase()
+const sector=sectorFilter.value
+const filtered=startups.filter(s=>
+s.startupName.toLowerCase().includes(key) &&
+(sector===""||s.sector===sector)
+)
+renderTable(filtered)
+}
+
+function openDeal(name){
+selectedStartup=name
+startupName.innerText="Startup: "+name
+dealModal.style.display="flex"
+}
+
+function closeModal(){
+dealModal.style.display="none"
+dealAmount.value=""
+}
+
+function submitDeal(){
+if(!dealAmount.value)return alert("Enter amount")
+deals.push({
+startup:selectedStartup,
+amount:dealAmount.value,
+status:"Pending",
+time:new Date().toLocaleString()
+})
+localStorage.setItem("deals",JSON.stringify(deals))
+closeModal()
+loadStats()
+alert("Deal created")
+}
+
+loadStats()
+renderTable(startups)
 </script>
 
 </body>

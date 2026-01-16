@@ -2,95 +2,235 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Sign Up | RIGHT ONE</title>
+<title>Startup Dashboard | RIGHT ONE</title>
 
 <style>
+*{box-sizing:border-box;font-family:Arial}
+
 body{
     margin:0;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-family:Arial;
-    background:linear-gradient(to right,#0a3d62,#38ada9)
+    min-height:100vh;
+    background:#eef3f7;
+    padding:25px
 }
 
-.box{
-    background:white;
-    width:380px;
-    padding:30px;
-    border-radius:10px;
+h1{
+    color:#0a3d62;
     text-align:center;
-    box-shadow:0 0 20px rgba(0,0,0,0.3)
+    margin-bottom:25px
 }
 
-h2{color:#0a3d62}
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-bottom:30px
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:14px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.15);
+    text-align:center
+}
+
+.card h2{
+    color:#38ada9;
+    margin-bottom:10px
+}
+
+.filters{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px
+}
 
 input,select,button{
-    width:100%;
     padding:10px;
-    margin:8px 0
+    border-radius:6px;
+    border:1px solid #ccc
 }
 
 button{
+    background:#0a3d62;
+    color:white;
+    cursor:pointer;
+    border:none
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white
+}
+
+th,td{
+    padding:12px;
+    border:1px solid #ddd;
+    font-size:14px
+}
+
+th{
+    background:#0a3d62;
+    color:white
+}
+
+.badge{
+    padding:4px 8px;
     background:#38ada9;
     color:white;
-    border:none;
-    border-radius:5px;
-    font-size:15px
+    border-radius:4px;
+    font-size:12px
 }
+
+.status-accepted{color:green}
+.status-rejected{color:red}
+.status-pending{color:orange}
 </style>
 </head>
 
 <body>
 
-<div class="box">
-<h2>Create Account</h2>
+<h1>Startup Dashboard</h1>
 
-<form id="signupForm">
-<input id="name" placeholder="Full Name" required>
-<input id="email" type="email" placeholder="Email" required>
-<input id="password" type="password" placeholder="Password" required>
-
-<select id="role" required>
-<option value="">Select Role</option>
-<option value="investor">Investor</option>
-<option value="startup">Startup</option>
-</select>
-
-<button type="submit">Continue</button>
-</form>
+<div class="cards">
+<div class="card"><h2 id="totalInvestors">0</h2><p>Total Investors</p></div>
+<div class="card"><h2 id="verifiedInvestors">0</h2><p>Verified Investors</p></div>
+<div class="card"><h2 id="totalDeals">0</h2><p>Total Deals</p></div>
+<div class="card"><h2 id="acceptedDeals">0</h2><p>Accepted Deals</p></div>
 </div>
 
+<div class="filters">
+<input id="search" placeholder="Search Investor">
+<select id="interestFilter">
+<option value="">All Interests</option>
+<option>Technology</option>
+<option>Healthcare</option>
+<option>Education</option>
+<option>E-Commerce</option>
+</select>
+<button onclick="applyFilter()">Filter</button>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>Investor</th>
+<th>Interest</th>
+<th>Budget (₹ Cr)</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody id="investorTable"></tbody>
+</table>
+
+<h2>Deal Offers</h2>
+
+<table>
+<thead>
+<tr>
+<th>Investor</th>
+<th>Amount (₹ Cr)</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="dealTable"></tbody>
+</table>
+
 <script>
-document.getElementById("signupForm").addEventListener("submit",e=>{
-    e.preventDefault()
-
-    const name=document.getElementById("name").value.trim()
-    const email=document.getElementById("email").value.trim()
-    const password=document.getElementById("password").value
-    const role=document.getElementById("role").value
-
-    if(name.length<3||password.length<6||!role){
-        alert("Invalid input")
-        return
-    }
-
-    const users=JSON.parse(localStorage.getItem("users"))||[]
-
-    if(users.some(u=>u.email===email)){
-        alert("User already exists")
-        return
-    }
-
-    users.push({name,email,password,role})
-    localStorage.setItem("users",JSON.stringify(users))
-    localStorage.setItem("currentRole",role)
-
-    role==="investor"
-        ? location.href="investor_form.html"
-        : location.href="startup_form.html"
+function seedData(){
+if(!localStorage.getItem("investors")){
+const interests=["Technology","Healthcare","Education","E-Commerce"]
+const investors=[]
+for(let i=1;i<=8;i++){
+investors.push({
+name:"Investor "+i,
+interest:interests[Math.floor(Math.random()*interests.length)],
+budget:Math.floor(Math.random()*80)+10,
+kycStatus:Math.random()>0.3?"Approved":"Pending"
 })
+}
+localStorage.setItem("investors",JSON.stringify(investors))
+}
+
+if(!localStorage.getItem("deals")){
+const deals=[]
+for(let i=1;i<=4;i++){
+deals.push({
+investor:"Investor "+i,
+amount:Math.floor(Math.random()*20)+5,
+status:"Pending"
+})
+}
+localStorage.setItem("deals",JSON.stringify(deals))
+}
+}
+
+seedData()
+
+let investors=JSON.parse(localStorage.getItem("investors"))||[]
+let deals=JSON.parse(localStorage.getItem("deals"))||[]
+
+function loadStats(){
+totalInvestors.innerText=investors.length
+verifiedInvestors.innerText=investors.filter(i=>i.kycStatus==="Approved").length
+totalDeals.innerText=deals.length
+acceptedDeals.innerText=deals.filter(d=>d.status==="Accepted").length
+}
+
+function renderInvestors(list){
+investorTable.innerHTML=""
+list.forEach(i=>{
+investorTable.innerHTML+=`
+<tr>
+<td>${i.name}</td>
+<td>${i.interest}</td>
+<td>${i.budget}</td>
+<td>${i.kycStatus==="Approved"?'<span class="badge">Verified</span>':'Pending'}</td>
+</tr>`
+})
+}
+
+function renderDeals(){
+dealTable.innerHTML=""
+deals.forEach((d,index)=>{
+dealTable.innerHTML+=`
+<tr>
+<td>${d.investor}</td>
+<td>${d.amount}</td>
+<td class="status-${d.status.toLowerCase()}">${d.status}</td>
+<td>
+${d.status==="Pending"?`
+<button onclick="updateDeal(${index},'Accepted')">Accept</button>
+<button onclick="updateDeal(${index},'Rejected')">Reject</button>
+`:''}
+</td>
+</tr>`
+})
+}
+
+function applyFilter(){
+const key=search.value.toLowerCase()
+const interest=interestFilter.value
+const filtered=investors.filter(i=>
+i.name.toLowerCase().includes(key) &&
+(interest===""||i.interest===interest)
+)
+renderInvestors(filtered)
+}
+
+function updateDeal(index,status){
+deals[index].status=status
+localStorage.setItem("deals",JSON.stringify(deals))
+loadStats()
+renderDeals()
+}
+
+loadStats()
+renderInvestors(investors)
+renderDeals()
 </script>
 
 </body>

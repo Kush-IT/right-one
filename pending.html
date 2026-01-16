@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Verification Pending | RIGHT ONE</title>
+
+<style>
+*{box-sizing:border-box;font-family:Arial}
+
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(to right,#0a3d62,#38ada9)
+}
+
+.box{
+    background:white;
+    width:420px;
+    padding:35px;
+    border-radius:14px;
+    text-align:center;
+    box-shadow:0 15px 35px rgba(0,0,0,0.25)
+}
+
+h2{
+    color:#0a3d62;
+    margin-bottom:15px
+}
+
+p{
+    color:#555;
+    font-size:14px;
+    line-height:1.6
+}
+
+.loader{
+    margin:25px auto;
+    width:50px;
+    height:50px;
+    border:6px solid #ddd;
+    border-top:6px solid #38ada9;
+    border-radius:50%;
+    animation:spin 1s linear infinite
+}
+
+@keyframes spin{
+    from{transform:rotate(0deg)}
+    to{transform:rotate(360deg)}
+}
+
+.status{
+    margin-top:15px;
+    font-size:13px;
+    color:#888
+}
+
+button{
+    margin-top:20px;
+    padding:10px 20px;
+    border:none;
+    border-radius:6px;
+    background:#0a3d62;
+    color:white;
+    cursor:pointer
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+<h2>Verification in Progress</h2>
+
+<p>
+Your profile is currently under review.  
+Our admin team is verifying your KYC details.
+</p>
+
+<div class="loader"></div>
+
+<p class="status">Status: Pending Approval</p>
+
+<button onclick="checkStatus()">Refresh Status</button>
+</div>
+
+<script>
+function checkStatus(){
+    const role=localStorage.getItem("currentRole")
+    if(!role)return
+
+    if(role==="investor"){
+        const investors=JSON.parse(localStorage.getItem("investors"))||[]
+        if(investors.some(i=>i.kycStatus==="Approved")){
+            location.href="investor_dashboard.html"
+        }else{
+            alert("Still under review")
+        }
+    }
+
+    if(role==="startup"){
+        const startups=JSON.parse(localStorage.getItem("startups"))||[]
+        if(startups.some(s=>s.kycStatus==="Approved")){
+            location.href="startup_dashboard.html"
+        }else{
+            alert("Still under review")
+        }
+    }
+}
+</script>
+
+</body>
+</html>
