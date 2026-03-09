@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYC Verification - RIGHTONE</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <style>
+        .file-upload-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .file-box {
+            border: 2px dashed var(--glass-border);
+            border-radius: var(--radius-sm);
+            padding: 2rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition-subtle);
+        }
+
+        .file-box:hover {
+            border-color: var(--primary);
+            background: var(--glass-bg);
+        }
+
+        .file-box input {
+            display: none;
+        }
+
+        .file-box i {
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .file-box.uploaded {
+            border-color: var(--success);
+            background: hsla(160, 84%, 39%, 0.1);
+        }
+    </style>
+</head>
+
+<body class="dashboard-layout">
+    <aside class="sidebar">
+        <a href="../index.html" class="logo-area text-gradient" style="text-decoration: none;">
+            <img src="../images/logo.png" alt="Logo" style="height: 42px; width: auto;">
+            <span>RIGHTONE</span>
+        </a>
+        <nav>
+            <ul class="nav-links" id="dynamicNav">
+                <!-- Links will be injected based on role -->
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-navbar">
+            <h2 class="animate-fade">Institutional Verification (KYC)</h2>
+        </header>
+
+        <section class="glass-container">
+            <div class="glass-card animate-fade">
+                <form id="kycForm">
+                    <h3 style="margin-bottom: 1.5rem;">Personal & Professional Details</h3>
+                    <div class="stats-grid" style="grid-template-columns: 1fr 1fr;">
+                        <div class="form-group">
+                            <label class="form-label">Government ID Number</label>
+                            <input type="text" id="idNumber" class="form-input" placeholder="ABC1234567" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Nationality</label>
+                            <input type="text" id="nationality" class="form-input" placeholder="e.g. United States"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Permanent Address</label>
+                        <textarea id="address" class="form-input" rows="3" placeholder="Street, City, Zip Code..."
+                            required></textarea>
+                    </div>
+
+                    <h3 style="margin-bottom: 1.5rem; margin-top: 2rem;">Identity Proofs (3 Documents Required)</h3>
+                    <p class="text-dim" style="margin-bottom: 1rem;">Please upload high-quality photos/scans of your (1)
+                        Passport/ID Front, (2) ID Back, and (3) Proof of Address (Utility bill/Statement).</p>
+
+                    <div class="file-upload-grid">
+                        <label class="file-box" id="box1">
+                            <input type="file" id="doc1" accept="image/*,application/pdf"
+                                onchange="handleFile(this, 'box1')">
+                            <span>ID Front</span>
+                        </label>
+                        <label class="file-box" id="box2">
+                            <input type="file" id="doc2" accept="image/*,application/pdf"
+                                onchange="handleFile(this, 'box2')">
+                            <span>ID Back</span>
+                        </label>
+                        <label class="file-box" id="box3">
+                            <input type="file" id="doc3" accept="image/*,application/pdf"
+                                onchange="handleFile(this, 'box3')">
+                            <span>Proof of Address</span>
+                        </label>
+                    </div>
+
+                    <div style="margin-top: 2.5rem;">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Verification
+                            Request</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        function handleFile(input, boxId) {
+            const box = document.getElementById(boxId);
+            if (input.files && input.files[0]) {
+                box.classList.add('uploaded');
+                box.querySelector('span').textContent = input.files[0].name;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem(CONFIG.USER_KEY));
+            const nav = document.getElementById('dynamicNav');
+
+            if (user.role === 'STARTUP') {
+                nav.innerHTML = `
+                    <li><a href="../dashboards/startup_dashboard.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="../deals/my_deals.html" class="nav-link">My Deals</a></li>
+                    <li><a href="../deals/create_deal.html" class="nav-link">Raise Capital</a></li>
+                    <li><a href="#" class="nav-link active">KYC Verification</a></li>
+                    <li><a href="../profile/startup_profile.html" class="nav-link">Profile</a></li>
+                `;
+            } else {
+                nav.innerHTML = `
+                    <li><a href="../dashboards/investor_dashboard.html" class="nav-link">Deals Explorer</a></li>
+                    <li><a href="../deals/my_interests.html" class="nav-link">My Interests</a></li>
+                    <li><a href="#" class="nav-link active">KYC Verification</a></li>
+                    <li><a href="../profile/investor_profile.html" class="nav-link">Profile</a></li>
+                `;
+            }
+
+            nav.innerHTML += `<li><a href="#" onclick="Auth.logout()" class="nav-link" style="margin-top: auto; color: var(--error);">Logout</a></li>`;
+
+            document.getElementById('kycForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = e.target.querySelector('button');
+
+                // Validate files
+                if (!document.getElementById('doc1').files[0] ||
+                    !document.getElementById('doc2').files[0] ||
+                    !document.getElementById('doc3').files[0]) {
+                    UI.toast('Please upload all 3 ID proofs', 'error');
+                    return;
+                }
+
+                UI.showLoading(btn);
+
+                // Simulation of FormData submission
+                // In a real app, you'd use Multi-part form data
+                try {
+                    await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate network
+                    UI.toast('KYC documents submitted for review!', 'success');
+                    setTimeout(() => {
+                        window.location.href = user.role === 'STARTUP' ?
+                            '../dashboards/startup_dashboard.html' :
+                            '../dashboards/investor_dashboard.html';
+                    }, 2000);
+                } catch (err) {
+                    UI.toast('Submission failed', 'error');
+                } finally {
+                    UI.hideLoading(btn);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

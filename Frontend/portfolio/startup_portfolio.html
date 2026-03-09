@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Portfolio - RIGHTONE</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body class="dashboard-layout">
+    <aside class="sidebar">
+        <a href="../index.html" class="logo-area text-gradient" style="text-decoration: none;">
+            <img src="../images/logo.png" alt="Logo" style="height: 42px; width: auto;">
+            <span>RIGHTONE</span>
+        </a>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="../dashboards/startup_dashboard.html" class="nav-link">Dashboard</a></li>
+                <li><a href="../deals/my_deals.html" class="nav-link">My Deals</a></li>
+                <li><a href="#" class="nav-link active">Portfolio</a></li>
+                <li><a href="../profile/startup_kyc.html" class="nav-link">KYC Verification</a></li>
+                <li><a href="../profile/startup_profile.html" class="nav-link">Profile</a></li>
+                <li><a href="#" onclick="Auth.logout()" class="nav-link"
+                        style="margin-top: auto; color: var(--error);">Logout</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-navbar">
+            <h2 class="animate-fade">Startup Portfolio & Cap Table</h2>
+        </header>
+
+        <section class="stats-grid">
+            <div class="glass-card stat-card">
+                <div class="stat-label">Total Capital Raised</div>
+                <div class="stat-value" id="totalRaised">₹0</div>
+            </div>
+            <div class="glass-card stat-card">
+                <div class="stat-label">Active Investors</div>
+                <div class="stat-value" id="investorsCount">0</div>
+            </div>
+            <div class="glass-card stat-card">
+                <div class="stat-label">Total Equity Diluted</div>
+                <div class="stat-value" id="totalEquity">0%</div>
+            </div>
+        </section>
+
+        <section class="glass-card">
+            <h3>Cap Table (Active Investors)</h3>
+            <div class="table-container" style="margin-top: 1.5rem;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Investor Name</th>
+                            <th>Deal</th>
+                            <th>Amount Invested</th>
+                            <th>Equity Stake</th>
+                            <th>Investment Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="capTableBody">
+                        <tr>
+                            <td colspan="5" style="text-align:center; padding: 3rem;">Loading cap table...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Hidden PDF Template -->
+    <div id="pdfTemplate" style="display: none;">
+        <div style="padding: 60px; font-family: 'Inter', sans-serif; color: #1e293b; line-height: 1.6;">
+            <!-- Header -->
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #6366f1; padding-bottom: 20px; margin-bottom: 40px;">
+                <div>
+                    <h1 style="color: #6366f1; margin: 0; font-size: 28px; letter-spacing: -0.025em;">RIGHTONE</h1>
+                    <p style="margin: 5px 0 0; color: #64748b; font-size: 14px;">Startup Ecosystem Ledger</p>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-weight: 700; color: #0f172a;">FUNDING CONFIRMATION</div>
+                    <div id="pdfRefNumber" style="font-size: 12px; color: #64748b;">REF: RO-FUND-2024-XXXX</div>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div style="margin-bottom: 30px;">
+                <p>Date: <span id="pdfDate">March 6, 2026</span></p>
+                <p>This document serves as formal confirmation of capital received through the RIGHTONE platform for
+                    equity allocation as per the cap table agreement.</p>
+            </div>
+
+            <!-- Details Card -->
+            <div
+                style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px; margin-bottom: 40px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <div style="font-size: 12px; color: #64748b; text-transform: uppercase;">Startup (Issuer)</div>
+                        <div id="pdfStartupName"
+                            style="font-size: 18px; font-weight: 600; color: #0f172a; margin-top: 4px;">Company Name
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 12px; color: #64748b; text-transform: uppercase;">Investor (Subscriber)
+                        </div>
+                        <div id="pdfInvestorName"
+                            style="font-size: 18px; font-weight: 600; color: #0f172a; margin-top: 4px;">Investor Name
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size: 12px; color: #64748b; text-transform: uppercase;">Capital Raised</div>
+                        <div id="pdfAmount" style="font-size: 24px; font-weight: 700; color: #6366f1; margin-top: 4px;">
+                            ₹50.00 Lakhs</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 12px; color: #64748b; text-transform: uppercase;">Equity Allocated</div>
+                        <div id="pdfEquity" style="font-size: 24px; font-weight: 700; color: #10b981; margin-top: 4px;">
+                            5.0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Message/Declaration -->
+            <div style="margin-bottom: 60px;">
+                <p style="font-style: italic; color: #475569;">"This transaction confirms the successful close of a
+                    funding milestone. All equity distributions are recorded in the digital ledger and mapped to the
+                    authorized share capital of the issuer."</p>
+            </div>
+
+            <!-- Footer/Signatures -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 100px;">
+                <div style="text-align: center;">
+                    <div style="width: 200px; border-bottom: 1px solid #cbd5e1; margin-bottom: 10px;"></div>
+                    <div style="font-size: 14px; font-weight: 500;">Authorized Officer</div>
+                    <div style="font-size: 12px; color: #64748b;">RIGHTONE Platform</div>
+                </div>
+                <div style="text-align: right;">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=VERIFIED-RO-STARTUP"
+                        alt="QR Verify" style="opacity: 0.8; width: 80px;">
+                    <div style="font-size: 10px; color: #94a3b8; margin-top: 5px;">Digitally Recorded</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/startup_portfolio.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Deals - RIGHTONE</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+
+<body class="dashboard-layout">
+    <aside class="sidebar">
+        <a href="../index.html" class="logo-area text-gradient" style="text-decoration: none;">
+            <img src="../images/logo.png" alt="Logo" style="height: 42px; width: auto;">
+            <span>RIGHTONE</span>
+        </a>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="../dashboards/startup_dashboard.html" class="nav-link">Dashboard</a></li>
+                <li><a href="#" class="nav-link active">My Deals</a></li>
+                <li><a href="../portfolio/startup_portfolio.html" class="nav-link">Portfolio</a></li>
+                <li><a href="../profile/startup_kyc.html" class="nav-link">KYC Verification</a></li>
+                <li><a href="../profile/startup_profile.html" class="nav-link">Profile</a></li>
+                <li><a href="#" onclick="Auth.logout()" class="nav-link"
+                        style="margin-top: auto; color: var(--error);">Logout</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-navbar">
+            <h2 class="animate-fade">My Funding Rounds</h2>
+            <a href="create_deal.html" class="btn btn-primary">New Deal</a>
+        </header>
+
+        <section class="glass-container">
+            <div class="data-table-container animate-fade">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Deal Title</th>
+                            <th>Target</th>
+                            <th>Equity</th>
+                            <th>Interests</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="myDealsTableBody">
+                        <tr>
+                            <td colspan="6" style="text-align:center; padding: 3rem;">Loading deals...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const tableBody = document.getElementById('myDealsTableBody');
+            const newDealBtn = document.querySelector('header .btn-primary');
+            try {
+                const res = await API.get('/startup/my-deals');
+                tableBody.innerHTML = '';
+
+                if (res.data.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 3rem;" class="text-dim">No deals created yet.</td></tr>';
+                    return;
+                }
+
+                // If a deal exists, change button to "Update Deal"
+                if (res.data.length > 0) {
+                    newDealBtn.textContent = 'Update Deal';
+                }
+
+                for (const deal of res.data) {
+                    const interestRes = await API.get(`/startup/deals/${deal.id}/interests`);
+                    const interestsCount = interestRes.data.length;
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td style="font-weight:600">${deal.title}</td>
+                        <td>${deal.fundingRequired}</td>
+                        <td>${deal.equityOffered}</td>
+                        <td>${interestsCount}</td>
+                        <td><span class="badge badge-open badge-md">${deal.status}</span></td>
+                        <td>
+                            <a href="create_deal.html" class="btn btn-secondary btn-sm" style="text-decoration: none;">Edit</a>
+                        </td>
+                    `;
+                    tableBody.appendChild(tr);
+                }
+            } catch (err) {
+                console.error('Error in MyDeals:', err);
+                UI.toast(err.message || 'Failed to load deals', 'error');
+                tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 3rem;" class="text-error">Error: ${err.message || 'Failed to load deals'}</td></tr>`;
+            }
+        });
+    </script>
+</body>
+
+</html>

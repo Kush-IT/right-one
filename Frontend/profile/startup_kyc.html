@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup KYC - RIGHTONE</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/kyc.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body class="dashboard-layout">
+    <aside class="sidebar">
+        <a href="../index.html" class="logo-area text-gradient" style="text-decoration: none;">
+            <img src="../images/logo.png" alt="Logo" style="height: 42px; width: auto;">
+            <span>RIGHTONE</span>
+        </a>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="../dashboards/startup_dashboard.html" class="nav-link">Dashboard</a></li>
+                <li><a href="#" class="nav-link active">KYC Verification</a></li>
+                <li><a href="#" onclick="Auth.logout()" class="nav-link"
+                        style="margin-top: auto; color: var(--error);">Logout</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="kyc-container">
+            <header class="animate-fade">
+                <h1 class="text-gradient">Startup Verification</h1>
+                <p class="text-dim">Complete your institutional KYC to start raising capital.</p>
+            </header>
+
+            <div class="step-indicator animate-fade">
+                <div class="step active"></div>
+                <div class="step"></div>
+                <div class="step"></div>
+                <div class="step"></div>
+                <div class="step"></div>
+                <div class="step"></div>
+            </div>
+
+            <div id="approvedContainer" class="glass-card animate-fade"
+                style="display: none; text-align: center; padding: 4rem 2rem;">
+                <div class="success-icon" style="font-size: 4rem; color: var(--success); margin-bottom: 2rem;">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2 class="text-gradient">KYC Verification Approved!</h2>
+                <p class="text-dim" style="margin: 1.5rem 0 2.5rem;">Your identity and business documents have been
+                    verified. You can now access all platform features.</p>
+                <a href="../dashboards/startup_dashboard.html" class="btn btn-primary">Go to Dashboard</a>
+            </div>
+
+            <div class="glass-card animate-fade" id="formCard">
+                <form id="kycForm" novalidate>
+
+                    <!-- SECTION 1: Personal Details -->
+                    <div class="form-section active" data-step="1">
+                        <div class="section-header">
+                            <h3>Personal Details</h3>
+                            <span class="text-muted">Step 1 of 6</span>
+                        </div>
+                        <div class="stats-grid" style="grid-template-columns: 1fr 1fr;">
+                            <div class="form-group">
+                                <label class="form-label">Full Name</label>
+                                <input type="text" name="fullName" class="form-input" placeholder="As per Identity"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Date of Birth</label>
+                                <input type="date" name="dateOfBirth" class="form-input" required>
+                            </div>
+                        </div>
+                        <div class="stats-grid" style="grid-template-columns: 1fr 1fr;">
+                            <div class="form-group">
+                                <label class="form-label">Gender</label>
+                                <select name="gender" class="form-input" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Nationality</label>
+                                <input type="text" name="nationality" class="form-input" placeholder="e.g. Indian"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="stats-grid" style="grid-template-columns: 1fr 1fr;">
+                            <div class="form-group">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" name="phoneNumber" class="form-input" placeholder="+91 XXXXX XXXXX"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email Address</label>
+                                <input type="email" name="email" id="email" class="form-input" readonly>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: flex-end; margin-top: 2rem;">
+                            <button type="button" class="btn btn-primary" onclick="KYC.nextStep()">Next Section <i
+                                    class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 2: Address -->
+                    <div class="form-section" data-step="2">
+                        <div class="section-header">
+                            <h3>Address Details</h3>
+                            <span class="text-muted">Step 2 of 6</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Address Line 1</label>
+                            <input type="text" name="addressLine1" class="form-input" placeholder="Building, Street"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Address Line 2</label>
+                            <input type="text" name="addressLine2" class="form-input" placeholder="Locality, Landmark">
+                        </div>
+                        <div class="stats-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+                            <div class="form-group">
+                                <label class="form-label">City</label>
+                                <input type="text" name="city" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">State</label>
+                                <input type="text" name="state" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Postal Code</label>
+                                <input type="text" name="postalCode" class="form-input" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Country</label>
+                            <input type="text" name="country" class="form-input" required>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 2rem;">
+                            <button type="button" class="btn btn-secondary" onclick="KYC.prevStep()"><i
+                                    class="fas fa-arrow-left"></i> Previous</button>
+                            <button type="button" class="btn btn-primary" onclick="KYC.nextStep()">Next Section <i
+                                    class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 3: Identity -->
+                    <div class="form-section" data-step="3">
+                        <div class="section-header">
+                            <h3>Identity Verification</h3>
+                            <span class="text-muted">Step 3 of 6</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Identity Type</label>
+                            <select name="identityType" class="form-input" required>
+                                <option value="Aadhar Card">Aadhar Card</option>
+                                <option value="Passport">Passport</option>
+                                <option value="Driving License">Driving License</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Identity Number (Aadhar/Passport)</label>
+                            <input type="text" name="identityNumber" class="form-input" placeholder="Enter ID Number"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">PAN Card Number</label>
+                            <input type="text" name="panNumber" class="form-input" placeholder="ABCDE1234F" required>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 2rem;">
+                            <button type="button" class="btn btn-secondary" onclick="KYC.prevStep()"><i
+                                    class="fas fa-arrow-left"></i> Previous</button>
+                            <button type="button" class="btn btn-primary" onclick="KYC.nextStep()">Next Section <i
+                                    class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 4: Banking -->
+                    <div class="form-section" data-step="4">
+                        <div class="section-header">
+                            <h3>Banking Details</h3>
+                            <span class="text-muted">Step 4 of 6</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Bank Name</label>
+                            <input type="text" name="bankName" class="form-input" placeholder="e.g. HDFC Bank" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Account Number</label>
+                            <input type="text" name="bankAccountNumber" class="form-input" placeholder="1234567890"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">IFSC Code</label>
+                            <input type="text" name="ifscCode" class="form-input" placeholder="HDFC0001234" required>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 2rem;">
+                            <button type="button" class="btn btn-secondary" onclick="KYC.prevStep()"><i
+                                    class="fas fa-arrow-left"></i> Previous</button>
+                            <button type="button" class="btn btn-primary" onclick="KYC.nextStep()">Next Section <i
+                                    class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 5: Business -->
+                    <div class="form-section" data-step="5">
+                        <div class="section-header">
+                            <h3>Business Details</h3>
+                            <span class="text-muted">Step 5 of 6</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Business Name</label>
+                            <input type="text" name="businessName" class="form-input" placeholder="Company Name"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Business Type</label>
+                            <select name="businessType" class="form-input" required>
+                                <option value="Startup">Startup</option>
+                                <option value="Private Limited">Private Limited</option>
+                                <option value="Partnership">Partnership</option>
+                                <option value="LLP">LLP</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Business Registration Number</label>
+                            <input type="text" name="businessRegistrationNumber" class="form-input"
+                                placeholder="CIN/LLPIN" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Business Website</label>
+                            <input type="url" name="businessWebsite" class="form-input"
+                                placeholder="https://example.com">
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 2rem;">
+                            <button type="button" class="btn btn-secondary" onclick="KYC.prevStep()"><i
+                                    class="fas fa-arrow-left"></i> Previous</button>
+                            <button type="button" class="btn btn-primary" onclick="KYC.nextStep()">Next Section <i
+                                    class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 6: Document Upload -->
+                    <div class="form-section" data-step="6">
+                        <div class="section-header">
+                            <h3>Document Upload</h3>
+                            <span class="text-muted">Step 6 of 6</span>
+                        </div>
+
+                        <div class="upload-grid">
+                            <label class="upload-card" id="aadharCardCard">
+                                <input type="file" name="aadharCard" id="aadharCard" accept=".jpg,.jpeg,.png,.pdf"
+                                    required>
+                                <i class="fas fa-id-card"></i>
+                                <strong>Aadhar Card</strong>
+                                <div class="preview-area">No file selected</div>
+                            </label>
+
+                            <label class="upload-card" id="panCardCard">
+                                <input type="file" name="panCard" id="panCard" accept=".jpg,.jpeg,.png,.pdf" required>
+                                <i class="fas fa-id-badge"></i>
+                                <strong>PAN Card</strong>
+                                <div class="preview-area">No file selected</div>
+                            </label>
+
+                            <label class="upload-card" id="bankStatementCard">
+                                <input type="file" name="bankStatement" id="bankStatement" accept=".jpg,.jpeg,.png,.pdf"
+                                    required>
+                                <i class="fas fa-file-invoice-dollar"></i>
+                                <strong>Bank Statement</strong>
+                                <div class="preview-area">No file selected</div>
+                            </label>
+
+                            <label class="upload-card" id="businessCertificateCard">
+                                <input type="file" name="businessCertificate" id="businessCertificate"
+                                    accept=".jpg,.jpeg,.png,.pdf" required>
+                                <i class="fas fa-certificate"></i>
+                                <strong>Reg. Certificate</strong>
+                                <div class="preview-area">No file selected</div>
+                            </label>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 2rem;">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <input type="checkbox" name="termsAccepted" id="termsAccepted" required>
+                                <span class="text-muted" style="font-size: 0.85rem;">I accept all terms and conditions
+                                    and certify that the information provided is accurate.</span>
+                            </label>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; margin-top: 2rem;">
+                            <button type="button" class="btn btn-secondary" onclick="KYC.prevStep()"><i
+                                    class="fas fa-arrow-left"></i> Previous</button>
+                            <button type="submit" class="btn btn-primary">Submit KYC Application</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/kyc.js"></script>
+</body>
+
+</html>

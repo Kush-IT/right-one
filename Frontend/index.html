@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RIGHTONE - Startup & Investor Marketplace</title>
+    <link rel="stylesheet" href="css/global.css">
+    <style>
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: radial-gradient(circle at top right, #F0F4FF 0%, #FFFFFF 100%);
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: url('https://www.transparenttextures.com/patterns/cubes.png');
+            opacity: 0.05;
+            animation: rotate 100s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            z-index: 1;
+        }
+
+        .hero p {
+            font-size: 1.35rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin-bottom: 3rem;
+            z-index: 1;
+        }
+
+        .nav-home {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .section-title {
+            display: block;
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 4rem;
+            line-height: 1.3;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-item {
+            padding: 2.5rem;
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            background: var(--bg-card);
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            border-color: var(--primary);
+            transform: translateY(-8px);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .how-it-works {
+            background: #F8FAFC;
+            padding: 8rem 2rem;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .step-card {
+            position: relative;
+            text-align: center;
+        }
+
+        .step-num {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+        }
+
+        footer {
+            padding: 5rem 2rem;
+            background: #FFFFFF;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 2rem 0;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+
+            .nav-home {
+                padding: 1.5rem 2rem;
+            }
+
+            .features-grid {
+                padding: 3rem 1.5rem;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="nav-home">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <img src="images/logo.png" alt="RightOne Logo" style="height: 50px; width: auto;">
+            <div class="logo-area text-gradient" style="font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em;">
+                RIGHTONE</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 2rem;">
+            <div class="nav-links-desktop" style="display: flex; gap: 2rem;">
+                <a href="#features"
+                    style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">Features</a>
+                <a href="#how-it-works" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">How
+                    it Works</a>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+                <a href="login.html" class="btn btn-secondary">Login</a>
+                <a href="signup.html" class="btn btn-primary">Join Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1 class="text-gradient">The Future of <br>Venture Capital.</h1>
+        <p>Connecting visionary founders with strategic investors in an enterprise-grade ecosystem. Secure, transparent,
+            and built for scale.</p>
+        <div style="display: flex; gap: 1.5rem; z-index: 1;">
+            <a href="signup.html" class="btn btn-primary" style="padding: 1.25rem 3rem; font-size: 1.125rem;">For
+                Startups</a>
+            <a href="signup.html" class="btn btn-secondary" style="padding: 1.25rem 3rem; font-size: 1.125rem;">For
+                Investors</a>
+        </div>
+    </section>
+
+    <section id="features" class="container">
+        <h2 class="section-title">Why Industry Leaders <br>Choose <span class="text-gradient">RIGHTONE</span></h2>
+        <div class="features-grid">
+            <div class="feature-item">
+                <div class="feature-icon">🛡️</div>
+                <h3>Institutional Security</h3>
+                <p class="text-dim">Enterprise-grade data protection and bank-level encryption for all sensitive deal
+                    documentation.</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">⚡</div>
+                <h3>Accelerated Funding</h3>
+                <p class="text-dim">Streamlined interest expression and deal-room workflows that cut fundraising time by
+                    up to 60%.</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🔍</div>
+                <h3>Verified Network</h3>
+                <p class="text-dim">Our ecosystem ensures only high-quality startups and strategic investors are part of
+                    the platform.</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">📊</div>
+                <h3>Advanced Analytics</h3>
+                <p class="text-dim">Real-time tracking of deal engagement, investor behavior, and market trends for
+                    strategic decisions.</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🤝</div>
+                <h3>Direct Matching</h3>
+                <p class="text-dim">Smart algorithms that highlight opportunities based on investor preferences and
+                    startup sectors.</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">💎</div>
+                <h3>Premium Experience</h3>
+                <p class="text-dim">A high-fidelity interface designed for senior executives and elite investment
+                    partners.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="how-it-works">
+        <h2 class="section-title">Seamless Integration <br>From <span class="text-gradient">Pitch to Check</span></h2>
+        <div class="steps-container">
+            <div class="step-card">
+                <div class="step-num">1</div>
+                <h3>Onboarding</h3>
+                <p class="text-dim">Join the ecosystem and complete your profile for immediate platform access.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">2</div>
+                <h3>Deal Creation</h3>
+                <p class="text-dim">Startups post funding rounds with all requisite details and secure document rooms.
+                </p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">3</div>
+                <h3>Interest & Match</h3>
+                <p class="text-dim">Investors browse verified opportunities and express interest with a single click.
+                </p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">4</div>
+                <h3>Capital Close</h3>
+                <p class="text-dim">Connect directly, conduct due diligence, and finalize your next major growth
+                    milestone.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div style="display: flex; justify-content: center; align-items: center; gap: 12px; margin-bottom: 2rem;">
+            <img src="images/logo.png" alt="RightOne Logo" style="height: 48px; width: auto;">
+            <div class="logo-area text-gradient" style="font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em;">
+                RIGHTONE</div>
+        </div>
+        <p>© 2026 RIGHTONE Technologies Inc. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact Support</a>
+            <a href="#">API Documentation</a>
+        </div>
+        <p class="text-dim" style="font-size: 0.8rem; max-width: 600px; margin: 0 auto;">Investing in startups involves
+            substantial risk. RIGHTONE is a platform for connections and does not provide financial or legal advice.</p>
+    </footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+
+</html>

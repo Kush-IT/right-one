@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investor Portfolio - RIGHTONE</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+
+<body class="dashboard-layout">
+    <aside class="sidebar">
+        <a href="../index.html" class="logo-area text-gradient" style="text-decoration: none;">
+            <img src="../images/logo.png" alt="Logo" style="height: 42px; width: auto;">
+            <span>RIGHTONE</span>
+        </a>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="../dashboards/investor_dashboard.html" class="nav-link">Deals Explorer</a></li>
+                <li><a href="../deals/my_interests.html" class="nav-link">My Interests</a></li>
+                <li><a href="#" class="nav-link active">Portfolio</a></li>
+                <li><a href="../profile/investor_kyc.html" class="nav-link">KYC Verification</a></li>
+                <li><a href="../profile/investor_profile.html" class="nav-link">Profile</a></li>
+                <li><a href="#" onclick="Auth.logout()" class="nav-link"
+                        style="margin-top: auto; color: var(--error);">Logout</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-navbar">
+            <h2 class="animate-fade">Investment Portfolio</h2>
+        </header>
+
+        <section class="stats-grid">
+            <div class="glass-card stat-card">
+                <div class="stat-label">Companies Invested</div>
+                <div class="stat-value" id="companiesCount">0</div>
+            </div>
+            <div class="glass-card stat-card">
+                <div class="stat-label">Total Capital Invested</div>
+                <div class="stat-value" id="totalInvested">₹0</div>
+            </div>
+            <div class="glass-card stat-card">
+                <div class="stat-label">Avg. Equity Holding</div>
+                <div class="stat-value" id="avgEquity">0%</div>
+            </div>
+        </section>
+
+        <section class="glass-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h3>My Holdings</h3>
+            </div>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Amount Invested</th>
+                            <th>Equity Holding</th>
+                            <th>Status</th>
+                            <th>Investment Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="portfolioTableBody">
+                        <tr>
+                            <td colspan="5" style="text-align:center; padding: 3rem;">Loading portfolio...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Hidden PDF Template -->
+    <div id="pdfTemplate" style="display: none;">
+        <div style="padding: 60px; font-family: 'Inter', sans-serif; color: #1e293b; line-height: 1.6;">
+            <!-- Header -->
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #6366f1; padding-bottom: 20px; margin-bottom: 40px;">
+                <div>
+                    <h1 style="color: #6366f1; margin: 0; font-size: 28px; letter-spacing: -0.025em;">RIGHTONE</h1>
+                    <p style="margin: 5px 0 0; color: #64748b; font-size: 14px;">Ecosystem of Innovation</p>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-weight: 700; color: #0f172a;">CONFIRMATION OF INVESTMENT</div>
+                    <div id="pdfRefNumber" style="font-size: 12px; color: #64748b;">REF: RO-INV-2024-XXXX</div>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div style="margin-bottom: 30px;">
+                <p>Date: <span id="pdfDate">March 6, 2026</span></p>
+                <p>This document serves as formal confirmation of the investment transaction completed through the
+                    RIGHTONE platform.</p>
+            </div>
+
+            <!-- Details Card -->
+            <div
+                style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px; margin-bottom: 40px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <div style="font-size: 12px; color: #64748b; text-transform: uppercase;">Startup Entity</div>
+                        <div id="pdfCompanyName"
+                            style="font-size: 18px; font-weight: 600; color: #0f172a; margin-top: 4px;">TechNova Alpha
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 12px; color: #64748b; text-transform: uppercase;">Investor</div>
+                        <div id="pdfInvestorName"
+                            style="font-size: 18px; font-weight: 600; color: #0f172a; margin-top: 4px;">Rahul Sharma
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size: 12px; color: #64748b; text-transform: uppercase;">Amount Invested</div>
+                        <div id="pdfAmount" style="font-size: 24px; font-weight: 700; color: #6366f1; margin-top: 4px;">
+                            ₹50.00 Lakhs</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 12px; color: #64748b; text-transform: uppercase;">Equity Holding</div>
+                        <div id="pdfEquity" style="font-size: 24px; font-weight: 700; color: #10b981; margin-top: 4px;">
+                            5.0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Message/Declaration -->
+            <div style="margin-bottom: 60px;">
+                <p style="font-style: italic; color: #475569;">"This transaction confirms the transfer of capital for
+                    the specified equity interest in the legal entity mentioned above. All terms and conditions as
+                    specified in the share purchase agreement are binding."</p>
+            </div>
+
+            <!-- Footer/Signatures -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 100px;">
+                <div style="text-align: center;">
+                    <div style="width: 200px; border-bottom: 1px solid #cbd5e1; margin-bottom: 10px;"></div>
+                    <div style="font-size: 14px; font-weight: 500;">Authorized Signatory</div>
+                    <div style="font-size: 12px; color: #64748b;">RIGHTONE Platform</div>
+                </div>
+                <div style="text-align: right;">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=VERIFIED-RO" alt="QR Verify"
+                        style="opacity: 0.8; width: 80px;">
+                    <div style="font-size: 10px; color: #94a3b8; margin-top: 5px;">Digitally Verified</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/portfolio.js"></script>
+</body>
+
+</html>

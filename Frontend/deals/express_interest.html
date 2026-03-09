@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Express Interest - RIGHTONE</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="dashboard-layout">
+    <aside class="sidebar">
+        <a href="../index.html" class="logo-area text-gradient" style="text-decoration: none;">
+            <img src="../images/logo.png" alt="Logo" style="height: 42px; width: auto;">
+            <span>RIGHTONE</span>
+        </a>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="../dashboards/investor_dashboard.html" class="nav-link">Deals Explorer</a></li>
+                <li><a href="../deals/my_interests.html" class="nav-link">My Interests</a></li>
+                <li><a href="../portfolio/investor_portfolio.html" class="nav-link">Portfolio</a></li>
+                <li><a href="../profile/investor_kyc.html" class="nav-link">KYC Verification</a></li>
+                <li><a href="../profile/investor_profile.html" class="nav-link">Profile</a></li>
+                <li><a href="#" onclick="Auth.logout()" class="nav-link"
+                        style="margin-top: auto; color: var(--error);">Logout</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-navbar">
+            <h2 id="dealTitle">Loading Deal Details...</h2>
+        </header>
+
+        <section style="max-width: 600px;">
+            <div class="glass-card">
+                <form id="interestForm" onsubmit="InterestPage.submitInterest(event)">
+                    <input type="hidden" id="modalDealId">
+
+                    <div class="form-group">
+                        <label class="form-label">Investment Amount (Lakhs)</label>
+                        <input type="number" step="0.001" id="investAmount" class="form-input" required
+                            placeholder="e.g. 50">
+                        <small class="text-dim">Min increase: ₹100 (0.001 Lakhs)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Equity Requested (%)</label>
+                        <input type="number" step="0.1" id="equityReq" class="form-input" required placeholder="e.g. 5">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Message to Startup</label>
+                        <textarea id="interestMessage" class="form-input" rows="5"
+                            placeholder="Tell them why you are interested in their vision..."></textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                        <button type="button" class="btn btn-secondary" style="flex: 1;"
+                            onclick="history.back()">Cancel</button>
+                        <button type="submit" class="btn btn-primary" style="flex: 2;" id="submitInterestBtn">Confirm &
+                            Submit Interest</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/investor_interest.js"></script>
+</body>
+
+</html>

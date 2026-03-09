@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Dashboard - RIGHTONE</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="dashboard-layout">
+    <aside class="sidebar">
+        <a href="../index.html" class="logo-area text-gradient" style="text-decoration: none;">
+            <img src="../images/logo.png" alt="Logo" style="height: 42px; width: auto;">
+            <span>RIGHTONE</span>
+        </a>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link active">Dashboard</a></li>
+                <li><a href="../deals/my_deals.html" class="nav-link">My Deals</a></li>
+                <li><a href="../portfolio/startup_portfolio.html" class="nav-link">Portfolio</a></li>
+                <li><a href="../profile/startup_kyc.html" class="nav-link">KYC Verification</a></li>
+                <li><a href="../profile/startup_profile.html" class="nav-link">Profile</a></li>
+                <li><a href="#" onclick="Auth.logout()" class="nav-link"
+                        style="margin-top: auto; color: var(--error);">Logout</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-navbar">
+            <h2 id="welcomeText">Welcome back, Startup</h2>
+            <div class="user-info">
+                <span id="kycBadge" class="badge">KYC Status</span>
+            </div>
+        </header>
+
+        <section class="stats-grid">
+            <div class="glass-card stat-card">
+                <div class="stat-label">Active Deals</div>
+                <div class="stat-value" id="activeDealsCount">0</div>
+            </div>
+            <div class="glass-card stat-card">
+                <div class="stat-label">Total Interests</div>
+                <div class="stat-value" id="totalInterestsCount">0</div>
+            </div>
+            <div class="glass-card stat-card">
+                <div class="stat-label">Total Funding Raised</div>
+                <div class="stat-value" id="totalRaised">₹0</div>
+            </div>
+        </section>
+
+        <section class="glass-card">
+            <h3>Interested Investors</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Investor</th>
+                        <th>Deal</th>
+                        <th>Interest Info</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="interestsTableBody">
+                    <!-- Dynamic Content -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/startup.js"></script>
+</body>
+
+</html>

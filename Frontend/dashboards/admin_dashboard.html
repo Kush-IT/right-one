@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Admin Dashboard - RIGHTONE</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="dashboard-layout">
+    <aside class="sidebar">
+        <a href="../index.html" class="logo-area text-gradient" style="text-decoration: none;">
+            <img src="../images/logo.png" alt="Logo" style="height: 42px; width: auto;">
+            <span>RIGHTONE</span>
+        </a>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link active">Admin Dashboard</a></li>
+                <li><a href="#" onclick="Auth.logout()" class="nav-link"
+                        style="margin-top: auto; color: var(--error);">Logout</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-navbar">
+            <h2 class="text-gradient">Admin Command Center</h2>
+            <div class="user-info">
+                <span class="badge badge-approved badge-md">SYSTEM ADMIN</span>
+            </div>
+        </header>
+
+        <section class="stats-grid">
+            <div class="glass-card stat-card">
+                <div class="stat-label">Platform Growth</div>
+                <div class="stat-value" id="totalDealsCount">0</div>
+                <div class="text-dim" style="font-size: 0.8rem; margin-top: 0.5rem;">Total Deals Seeded</div>
+            </div>
+            <div class="glass-card stat-card">
+                <div class="stat-label">Market Activity</div>
+                <div class="stat-value" id="totalInterestsCount">0</div>
+                <div class="text-dim" style="font-size: 0.8rem; margin-top: 0.5rem;">Active Interests</div>
+            </div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3>User Management</h3>
+                <button class="btn btn-primary btn-sm" onclick="Admin.loadUsers()">Refresh Users</button>
+            </div>
+            <div class="glass-card" style="padding: 1.5rem;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Joined</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <!-- Users will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section style="margin-top: 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3>KYC Verification Queue</h3>
+                <button class="btn btn-primary btn-sm" onclick="Admin.loadKycRequests()">Refresh Queue</button>
+            </div>
+
+            <div id="loadingSpinner" class="spinner" style="display: none;"></div>
+
+            <div class="glass-card" style="padding: 1.5rem;">
+                <table class="data-table" id="kycTable">
+                    <thead>
+                        <tr>
+                            <th>User Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Business</th>
+                            <th>Submitted</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="kycTableBody">
+                        <!-- Data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section style="margin-top: 2.5rem;">
+            <h3>Investment Flow Oversight</h3>
+            <div class="glass-card" style="margin-top: 1rem; padding: 1.5rem;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Investor</th>
+                            <th>Deal</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="interestsTableBody">
+                        <!-- Dynamic Content -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/admin.js"></script>
+</body>
+
+</html>

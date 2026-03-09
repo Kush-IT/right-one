@@ -1,0 +1,113 @@
+/* KYC System Styles Refinement */
+.kyc-container {
+    max-width: 850px;
+    margin: 3rem auto;
+}
+
+.form-section {
+    display: none;
+    animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.form-section.active {
+    display: block;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.step-indicator {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 3rem;
+}
+
+.step {
+    flex: 1;
+    height: 8px;
+    background: var(--bg-surface);
+    border-radius: 4px;
+    position: relative;
+    transition: var(--transition);
+}
+
+.step.active {
+    background: var(--primary);
+    box-shadow: 0 0 12px rgba(37, 99, 235, 0.3);
+}
+
+.step.completed {
+    background: var(--success);
+}
+
+/* Document Upload Styling */
+.upload-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.upload-card {
+    background: var(--bg-surface);
+    border: 2px dashed var(--border);
+    border-radius: 16px;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.upload-card:hover {
+    border-color: var(--primary);
+    background: var(--primary-glow);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-sm);
+}
+
+.upload-card.success {
+    border-color: var(--success);
+    background: rgba(16, 185, 129, 0.05);
+    border-style: solid;
+}
+
+.upload-card input[type="file"] {
+    display: none;
+}
+
+.upload-card i {
+    font-size: 2.25rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.preview-area {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .upload-grid {
+        grid-template-columns: 1fr;
+    }
+}

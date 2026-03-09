@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Profile - RIGHTONE</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="dashboard-layout">
+    <aside class="sidebar">
+        <a href="../index.html" class="logo-area text-gradient" style="text-decoration: none;">
+            <img src="../images/logo.png" alt="Logo" style="height: 42px; width: auto;">
+            <span>RIGHTONE</span>
+        </a>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="../dashboards/startup_dashboard.html" class="nav-link">Dashboard</a></li>
+                <li><a href="../deals/my_deals.html" class="nav-link">My Deals</a></li>
+                <li><a href="../deals/create_deal.html" class="nav-link">Raise Capital</a></li>
+                <li><a href="../portfolio/startup_portfolio.html" class="nav-link">Portfolio</a></li>
+                <li><a href="#" class="nav-link active">Profile</a></li>
+                <li><a href="#" onclick="Auth.logout()" class="nav-link"
+                        style="margin-top: auto; color: var(--error);">Logout</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-navbar">
+            <h2>Company Profile</h2>
+        </header>
+
+        <section class="glass-container">
+            <div class="glass-card">
+                <form id="profileForm">
+                    <div class="form-group">
+                        <label class="form-label">Company Name</label>
+                        <input type="text" id="companyName" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Sector</label>
+                        <input type="text" id="sector" class="form-input" placeholder="e.g. Fintech, AI" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Valuation ($)</label>
+                        <input type="text" id="valuation" class="form-input" placeholder="5,000,000" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Update Profile</button>
+                </form>
+            </div>
+        </section>
+        <section class="glass-container" style="margin-top: 2rem;">
+            <div class="glass-card">
+                <h3 style="margin-bottom: 1.5rem;" class="text-gradient">KYC Information</h3>
+                <div id="kycDataContainer" class="text-dim">
+                    <p>Loading KYC data...</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/profile.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+
+</html>

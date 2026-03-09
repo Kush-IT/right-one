@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Pending - RIGHTONE</title>
+    <link rel="stylesheet" href="../css/global.css">
+</head>
+
+<body style="display: flex; align-items: center; justify-content: center;">
+    <div class="glass-card animate-fade" style="max-width: 500px; text-align: center; margin: 2rem;">
+        <div style="margin-bottom: 1.5rem;">
+            <img src="../images/logo.png" alt="RightOne Logo" style="height: 64px; width: auto;">
+        </div>
+        <div style="font-size: 3rem; color: var(--warning); margin-bottom: 1rem;">
+            <i class="fas fa-clock"></i>
+        </div>
+        <h2 class="text-gradient" style="font-size: 2rem; margin-bottom: 1rem;">Submission Successful</h2>
+        <p class="text-main" style="margin-bottom: 2rem;">
+            Your KYC Application has been submitted successfully. Our team will review your documents within 24-48
+            hours. You will receive an email once the review is complete.
+        </p>
+        <p class="text-dim" style="font-size: 0.9rem; margin-bottom: 2rem;">
+            Current Status: <span class="badge badge-pending">PENDING REVIEW</span>
+        </p>
+        <div style="display: flex; gap: 1rem; justify-content: center;">
+            <a href="../index.html" class="btn btn-secondary">Return Home</a>
+            <button onclick="location.reload()" class="btn btn-primary" style="background: var(--info);">Check
+                Status</button>
+            <button onclick="Auth.logout()" class="btn btn-primary">Logout</button>
+        </div>
+    </div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="../js/config.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+
+</html>

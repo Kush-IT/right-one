@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Interests - RIGHTONE</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+
+<body class="dashboard-layout">
+    <aside class="sidebar">
+        <a href="../index.html" class="logo-area text-gradient" style="text-decoration: none;">
+            <img src="../images/logo.png" alt="Logo" style="height: 42px; width: auto;">
+            <span>RIGHTONE</span>
+        </a>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="../dashboards/investor_dashboard.html" class="nav-link">Deals Explorer</a></li>
+                <li><a href="#" class="nav-link active">My Interests</a></li>
+                <li><a href="../portfolio/investor_portfolio.html" class="nav-link">Portfolio</a></li>
+                <li><a href="../profile/kyc.html" class="nav-link">KYC Verification</a></li>
+                <li><a href="../profile/investor_profile.html" class="nav-link">Profile</a></li>
+                <li><a href="#" onclick="Auth.logout()" class="nav-link"
+                        style="margin-top: auto; color: var(--error);">Logout</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-navbar">
+            <h2 class="animate-fade">Expressed Interests</h2>
+        </header>
+
+        <section class="glass-container">
+            <div class="data-table-container animate-fade">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Deal Title</th>
+                            <th>Funding Target</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="myInterestsTableBody">
+                        <tr>
+                            <td colspan="5" style="text-align:center; padding: 3rem;">Loading interests...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const tableBody = document.getElementById('myInterestsTableBody');
+            try {
+                const res = await API.get('/interests/my');
+                tableBody.innerHTML = '';
+
+                if (res.data.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 3rem;" class="text-dim">You haven\'t expressed interest in any deals yet.</td></tr>';
+                    return;
+                }
+
+                res.data.forEach(interest => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td style="font-weight:600">${interest.companyName || 'N/A'}</td>
+                        <td>${interest.dealTitle || 'N/A'}</td>
+                        <td>${interest.fundingRequired || 'N/A'}</td>
+                        <td><span class="badge badge-${interest.status.toLowerCase()} badge-md">${interest.status}</span></td>
+                        <td class="text-muted">${new Date(interest.createdAt).toLocaleDateString()}</td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+            } catch (err) {
+                UI.toast('Failed to load interests', 'error');
+                tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 3rem;" class="text-error">Error loading interests.</td></tr>';
+            }
+        });
+    </script>
+</body>
+
+</html>

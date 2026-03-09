@@ -1,0 +1,64 @@
+/* Admin Specific Overrides Refinement */
+
+.btn-approve {
+    background: var(--success) !important;
+    color: white !important;
+    box-shadow: 0 2px 4px rgba(34, 197, 94, 0.2);
+}
+
+.btn-reject {
+    background: var(--error) !important;
+    color: white !important;
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+}
+
+.btn-sm {
+    padding: 0.4rem 0.8rem !important;
+    font-size: 0.75rem !important;
+}
+
+/* Document Link Mini Cards */
+.doc-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.doc-link {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0.3rem 0.6rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.7rem;
+    color: var(--primary-light);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    transition: var(--transition);
+}
+
+.doc-link:hover {
+    background: var(--primary-glow);
+    border-color: var(--primary);
+    color: var(--text-primary);
+}
+
+/* Extra padding for admin tables - more compact for actions */
+.data-table td {
+    padding: 0.75rem 1rem;
+}
+
+.data-table th:last-child,
+.data-table td:last-child {
+    min-width: 200px;
+    text-align: left;
+}
+
+/* Ensure buttons in table don't shrink */
+.data-table .btn {
+    flex-shrink: 0;
+}
+
+/* Status specific opacity for history */
+.badge-history {
+    opacity: 0.7;
+    filter: grayscale(0.2);
+}

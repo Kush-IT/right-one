@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Deal - RIGHTONE</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="dashboard-layout">
+    <aside class="sidebar">
+        <a href="../index.html" class="logo-area text-gradient" style="text-decoration: none;">
+            <img src="../images/logo.png" alt="Logo" style="height: 42px; width: auto;">
+            <span>RIGHTONE</span>
+        </a>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="../dashboards/startup_dashboard.html" class="nav-link">Dashboard</a></li>
+                <li><a href="my_deals.html" class="nav-link">My Deals</a></li>
+                <li><a href="../profile/startup_profile.html" class="nav-link">Profile</a></li>
+                <li><a href="#" onclick="Auth.logout()" class="nav-link"
+                        style="margin-top: auto; color: var(--error);">Logout</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-navbar">
+            <h2>Raise Capital</h2>
+        </header>
+
+        <section class="glass-container" style="max-width: 600px;">
+            <div class="glass-card">
+                <form id="createDealForm">
+                    <div class="form-group">
+                        <label class="form-label">Deal Title</label>
+                        <input type="text" id="title" class="form-input" placeholder="Seed Round 2024" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea id="description" class="form-input" rows="4"
+                            placeholder="Describe your growth potential..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Funding Required ($)</label>
+                        <input type="text" id="fundingRequired" class="form-input" placeholder="500,000" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Equity Offered (%)</label>
+                        <input type="text" id="equityOffered" class="form-input" placeholder="10" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Post Deal</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/deals.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+
+</html>
