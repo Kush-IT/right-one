@@ -38,6 +38,7 @@
     --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.12);
 
     /* Tokens */
+    --bg-base: #F8FAFC;
     --radius: 16px;
     --radius-sm: 10px;
     --radius-md: 16px;

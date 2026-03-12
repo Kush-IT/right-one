@@ -3,6 +3,10 @@ package com.example.Right.controller;
 import com.example.Right.dto.AdminStatsDTO;
 import com.example.Right.dto.ApiResponse;
 import com.example.Right.dto.UserDTO;
+import com.example.Right.dto.KycDTO;
+import com.example.Right.model.InvestmentInterest;
+import com.example.Right.model.KYCStatus;
+import com.example.Right.model.KycDetails;
 import com.example.Right.service.AdminService;
 import com.example.Right.service.InvestmentInterestService;
 import com.example.Right.service.KycService;
@@ -28,26 +32,27 @@ public class AdminController {
 
     @GetMapping("/stats")
     public ResponseEntity<ApiResponse<AdminStatsDTO>> getStats() {
-        return ResponseEntity.ok(ApiResponse.success("Admin stats fetched", adminService.getStats()));
+        return ResponseEntity.ok(
+                ApiResponse.success("Admin stats fetched", adminService.getStats()));
     }
 
     @GetMapping("/interests/all")
-    public ResponseEntity<ApiResponse<List<com.example.Right.model.InvestmentInterest>>> getAllInterests() {
+    public ResponseEntity<ApiResponse<List<InvestmentInterest>>> getAllInterests() {
         return ResponseEntity.ok(ApiResponse.success("All interests fetched", interestService.getAllInterests()));
     }
 
     @GetMapping("/kyc/all")
-    public ResponseEntity<ApiResponse<List<com.example.Right.dto.KycDTO>>> getAllKyc() {
+    public ResponseEntity<ApiResponse<List<KycDTO>>> getAllKyc() {
         return ResponseEntity.ok(ApiResponse.success("Success", kycService.getAllKycRequestsWithRoles()));
     }
 
     @PutMapping("/kyc/approve/{kycId}")
-    public ResponseEntity<com.example.Right.model.KycDetails> approveKyc(@PathVariable("kycId") Long kycId) {
-        return ResponseEntity.ok(kycService.updateStatus(kycId, com.example.Right.model.KYCStatus.APPROVED));
+    public ResponseEntity<KycDetails> approveKyc(@PathVariable("kycId") Long kycId) {
+        return ResponseEntity.ok(kycService.updateStatus(kycId, KYCStatus.APPROVED));
     }
 
     @PutMapping("/kyc/reject/{kycId}")
-    public ResponseEntity<com.example.Right.model.KycDetails> rejectKyc(@PathVariable("kycId") Long kycId) {
-        return ResponseEntity.ok(kycService.updateStatus(kycId, com.example.Right.model.KYCStatus.REJECTED));
+    public ResponseEntity<KycDetails> rejectKyc(@PathVariable("kycId") Long kycId) {
+        return ResponseEntity.ok(kycService.updateStatus(kycId, KYCStatus.REJECTED));
     }
 }

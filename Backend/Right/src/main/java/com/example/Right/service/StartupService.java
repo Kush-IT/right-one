@@ -6,6 +6,7 @@ import com.example.Right.dto.StartupProfileDTO;
 import com.example.Right.model.Deal;
 import com.example.Right.model.DealStatus;
 import com.example.Right.model.StartupProfile;
+import com.example.Right.model.InvestmentInterest;
 import com.example.Right.model.User;
 import com.example.Right.model.InterestStatus;
 import com.example.Right.model.KYCStatus;
@@ -16,6 +17,7 @@ import com.example.Right.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,7 +41,7 @@ public class StartupService {
                 .collect(Collectors.toList());
     }
 
-    private InterestDTO mapToInterestDTO(com.example.Right.model.InvestmentInterest i) {
+    private InterestDTO mapToInterestDTO(InvestmentInterest i) {
         InterestDTO dto = new InterestDTO();
         dto.setId(i.getId());
 

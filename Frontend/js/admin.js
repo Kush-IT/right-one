@@ -8,70 +8,82 @@ const Admin = {
 
     async loadUsers() {
         const tbody = document.getElementById('usersTableBody');
+        if (!tbody) return;
         try {
             const res = await API.get('/admin/users');
-            const data = res.data;
+            const data = (res && res.data) ? res.data : [];
             tbody.innerHTML = '';
 
-            if (!data || data.length === 0) {
+            if (data.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="4" style="text-align:center">No users found</td></tr>';
                 return;
             }
 
             data.forEach(u => {
                 const tr = document.createElement('tr');
+                const dateStr = u.createdAt ? new Date(u.createdAt).toLocaleDateString() : 'N/A';
                 tr.innerHTML = `
-                    <td>${u.name}</td>
-                    <td>${u.email}</td>
-                    <td><span class="badge ${u.role.toLowerCase()} badge-md">${u.role}</span></td>
-                    <td>${new Date(u.createdAt).toLocaleDateString()}</td>
+                    <td>${u.name || 'Unknown'}</td>
+                    <td>${u.email || 'N/A'}</td>
+                    <td><span class="badge ${(u.role || 'USER').toLowerCase()} badge-md">${u.role || 'USER'}</span></td>
+                    <td>${dateStr}</td>
                 `;
                 tbody.appendChild(tr);
             });
         } catch (err) {
-            console.error("Error loading users:", err);
+            console.error("Error in loadUsers:", err);
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--error)">Failed to load users</td></tr>';
         }
     },
 
     async loadStats() {
         try {
             const res = await API.get('/admin/stats');
-            console.log("Admin Stats Response:", res);
-            const stats = res.data;
+            const stats = (res && res.data) ? res.data : null;
             if (stats) {
-                document.getElementById('totalDealsCount').textContent = stats.totalDeals || 0;
-                document.getElementById('totalInterestsCount').textContent = stats.totalInterests || 0;
+                if (document.getElementById('totalDealsCount')) 
+                    document.getElementById('totalDealsCount').textContent = stats.totalDeals || 0;
+                if (document.getElementById('totalInterestsCount'))
+                    document.getElementById('totalInterestsCount').textContent = stats.totalInterests || 0;
             }
         } catch (err) {
-            console.error("Error loading stats:", err);
+            console.error("Error in loadStats:", err);
         }
     },
 
     async loadAllInterests() {
         const tbody = document.getElementById('interestsTableBody');
+        if (!tbody) return;
         try {
             const res = await API.get('/admin/interests/all');
-            const data = res.data;
+            const data = (res && res.data) ? res.data : [];
             tbody.innerHTML = '';
 
-            if (!data || data.length === 0) {
+            if (data.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="5" style="text-align:center">No interests found</td></tr>';
                 return;
             }
 
             data.forEach(i => {
                 const tr = document.createElement('tr');
+                const investorName = i.investor?.user?.name || 'Unknown Investor';
+                const dealTitle = i.deal?.title || 'Unknown Deal';
+                const amount = i.investmentAmount || 0;
+                const status = (i.status || 'PENDING').toUpperCase();
+                const date = i.createdAt ? new Date(i.createdAt).toLocaleDateString() : 'N/A';
+                
                 tr.innerHTML = `
-                    <td>${i.investor.user.name}</td>
-                    <td>${i.deal.title}</td>
-                    <td>₹${i.investmentAmount}L</td>
-                    <td><span class="badge ${i.status.toLowerCase()} badge-md">${i.status}</span></td>
-                    <td>${new Date(i.createdAt).toLocaleDateString()}</td>
+                    <td>${investorName}</td>
+                    <td>${dealTitle}</td>
+                    <td>₹${amount}L</td>
+                    <td><span class="badge ${status.toLowerCase()} badge-md">${status}</span></td>
+                    <td>${date}</td>
                 `;
                 tbody.appendChild(tr);
             });
         } catch (err) {
-            console.error("Error loading interests:", err);
+            console.error("Error in loadAllInterests:", err);
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: var(--error)">Failed to load interests</td></tr>';
         }
     },
 
@@ -88,7 +100,6 @@ const Admin = {
         const tableBody = document.getElementById('kycTableBody');
 
         try {
-            // Using the API wrapper to handle CONFIG.API_BASE_URL and token
             const result = await API.get("/admin/kyc/all");
             const data = result.data;
 
@@ -102,14 +113,11 @@ const Admin = {
             data.forEach(kyc => {
                 const tr = document.createElement('tr');
 
-                // Format date
                 const submittedDate = kyc.submittedAt ? new Date(kyc.submittedAt).toLocaleDateString() : 'N/A';
 
-                // Status Badge logic
                 const status = (kyc.status || 'PENDING').toUpperCase();
                 let statusBadge = `<span class="badge ${status.toLowerCase()} badge-md">${status}</span>`;
 
-                // Actions logic
                 let actionButtons = '';
                 if (status === 'PENDING') {
                     actionButtons = `

@@ -16,8 +16,6 @@ const InterestPage = {
 
     async loadDealDetails() {
         try {
-            // Since we don't have a single deal GET endpoint shown in snippets, 
-            // but we know it's needed, we'll try to find it or use a list and filter
             const res = await API.get('/deals/open');
             const deal = res.data.find(d => d.id == this.dealId);
 

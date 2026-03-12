@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Dashboard | RIGHT ONE</title>
+<style>
+body{font-family:Arial;background:#f2f4f7;padding:30px}
+h1{color:#0a3d62}
+table{width:100%;border-collapse:collapse;background:white}
+th,td{padding:10px;border:1px solid #ccc}
+th{background:#0a3d62;color:white}
+button{padding:6px 10px;margin:2px}
+</style>
+</head>
+<body>
+
+<h1>Admin KYC Approval</h1>
+
+<h2>Investors</h2>
+<table>
+<tr><th>Name</th><th>Email</th><th>Status</th><th>Action</th></tr>
+<tbody id="investors"></tbody>
+</table>
+
+<h2>Startups</h2>
+<table>
+<tr><th>Startup</th><th>Founder</th><th>Status</th><th>Action</th></tr>
+<tbody id="startups"></tbody>
+</table>
+
+<script>
+let investors=JSON.parse(localStorage.getItem("investors"))||[]
+let startups=JSON.parse(localStorage.getItem("startups"))||[]
+
+function render(){
+document.getElementById("investors").innerHTML=""
+investors.forEach((i,index)=>{
+document.getElementById("investors").innerHTML+=`
+<tr>
+<td>${i.name}</td>
+<td>${i.email}</td>
+<td>${i.kycStatus}</td>
+<td>
+<button onclick="approveInvestor(${index})">Approve</button>
+</td>
+</tr>`
+})
+
+document.getElementById("startups").innerHTML=""
+startups.forEach((s,index)=>{
+document.getElementById("startups").innerHTML+=`
+<tr>
+<td>${s.startupName}</td>
+<td>${s.founder}</td>
+<td>${s.kycStatus}</td>
+<td>
+<button onclick="approveStartup(${index})">Approve</button>
+</td>
+</tr>`
+})
+}
+
+function approveInvestor(i){
+investors[i].kycStatus="Approved"
+localStorage.setItem("investors",JSON.stringify(investors))
+render()
+}
+
+function approveStartup(i){
+startups[i].kycStatus="Approved"
+localStorage.setItem("startups",JSON.stringify(startups))
+render()
+}
+
+render()
+</script>
+</body>
+</html>

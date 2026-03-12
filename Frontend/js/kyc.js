@@ -63,11 +63,9 @@ const KYC = {
                     const input = form.querySelector(`[name="${name}"]`);
                     if (input && fieldMapping[name]) {
                         if (input.tagName === 'SELECT') {
-                            // For selects, we set the value if it's pending/rejected to help them
                             input.value = fieldMapping[name];
                         } else {
                             input.placeholder = `Current: ${fieldMapping[name]}`;
-                            // Also set value if they just want to resubmit without changes
                             input.value = fieldMapping[name];
                         }
                     }
@@ -91,7 +89,6 @@ const KYC = {
     },
 
     setupEventListeners() {
-        // File Previews
         const fileInputs = ['aadharCard', 'panCard', 'bankStatement', 'businessCertificate'];
         fileInputs.forEach(id => {
             const input = document.getElementById(id);
@@ -100,7 +97,6 @@ const KYC = {
             }
         });
 
-        // Form Submission
         const form = document.getElementById('kycForm');
         if (form) {
             form.addEventListener('submit', (e) => this.handleSubmit(e));
@@ -169,11 +165,9 @@ const KYC = {
     },
 
     updateStepUI() {
-        // Update Sections
         document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
         document.querySelector(`.form-section[data-step="${this.currentStep}"]`).classList.add('active');
 
-        // Update Indicators
         document.querySelectorAll('.step').forEach((s, idx) => {
             s.classList.remove('active', 'completed');
             if (idx + 1 < this.currentStep) s.classList.add('completed');
@@ -199,9 +193,7 @@ const KYC = {
         UI.showLoading(btn);
 
         const formData = new FormData(e.target);
-        // Note: userId is no longer strictly required in formData as backend uses token
 
-        // Debug: Log entries (excluding files for clarity)
         for (let pair of formData.entries()) {
             if (!(pair[1] instanceof File)) {
                 console.log(pair[0] + ': ' + pair[1]);
