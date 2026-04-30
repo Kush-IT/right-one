@@ -16,7 +16,7 @@ public class EmailService {
     public void sendOtpEmail(String to, String otp) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("RIGHTONE <noreply@rightone.com>");
+            message.setFrom("RIGHTONE <kushpatel0606@gmail.com>");
             message.setTo(to);
             message.setSubject("Your Login OTP - RIGHTONE");
             message.setText(
