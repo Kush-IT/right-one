@@ -1,5 +1,6 @@
 const CONFIG = {
     API_BASE_URL: 'https://right-one-vfi9.onrender.com/api',
+    //API_BASE_URL: 'http://localhost:8080/api',
     TOKEN_KEY: 'rightone_token',
     USER_KEY: 'rightone_user',
     get FRONTEND_ROOT() {
