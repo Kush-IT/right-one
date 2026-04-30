@@ -41,10 +41,11 @@ const Admin = {
             const res = await API.get('/admin/stats');
             const stats = (res && res.data) ? res.data : null;
             if (stats) {
-                if (document.getElementById('totalDealsCount')) 
-                    document.getElementById('totalDealsCount').textContent = stats.totalDeals || 0;
-                if (document.getElementById('totalInterestsCount'))
-                    document.getElementById('totalInterestsCount').textContent = stats.totalInterests || 0;
+                if (document.getElementById('totalDealsCount')) document.getElementById('totalDealsCount').textContent = stats.totalDeals || 0;
+                if (document.getElementById('totalInterestsCount')) document.getElementById('totalInterestsCount').textContent = stats.totalInterests || 0;
+                if (document.getElementById('totalUsersCount')) document.getElementById('totalUsersCount').textContent = stats.totalUsers || 0;
+                if (document.getElementById('totalStartupsCount')) document.getElementById('totalStartupsCount').textContent = stats.totalStartups || 0;
+                if (document.getElementById('totalInvestorsCount')) document.getElementById('totalInvestorsCount').textContent = stats.totalInvestors || 0;
             }
         } catch (err) {
             console.error("Error in loadStats:", err);
@@ -71,7 +72,7 @@ const Admin = {
                 const amount = i.investmentAmount || 0;
                 const status = (i.status || 'PENDING').toUpperCase();
                 const date = i.createdAt ? new Date(i.createdAt).toLocaleDateString() : 'N/A';
-                
+
                 tr.innerHTML = `
                     <td>${investorName}</td>
                     <td>${dealTitle}</td>
@@ -81,9 +82,151 @@ const Admin = {
                 `;
                 tbody.appendChild(tr);
             });
+
+            this.renderAnalytics(data);
+
         } catch (err) {
             console.error("Error in loadAllInterests:", err);
             tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: var(--error)">Failed to load interests</td></tr>';
+        }
+    },
+
+    renderAnalytics(interests) {
+        if (!interests || interests.length === 0) return;
+
+        // 1. Prepare Investment Flow Data (Pending vs Accepted)
+        let totalPending = 0;
+        let totalAccepted = 0;
+        
+        // 2. Prepare Top Startups Data
+        const startupCapitalMap = {};
+
+        interests.forEach(i => {
+            const amount = parseFloat(i.investmentAmount || 0);
+            const status = (i.status || 'PENDING').toUpperCase();
+            
+            if(status === 'PENDING') totalPending += amount;
+            if(status === 'ACCEPTED') totalAccepted += amount;
+
+            if (status === 'ACCEPTED') {
+                const dealTitle = i.deal?.title || 'Unknown Deal';
+                startupCapitalMap[dealTitle] = (startupCapitalMap[dealTitle] || 0) + amount;
+            }
+        });
+
+        if (document.getElementById('totalCapitalDeployed')) {
+            document.getElementById('totalCapitalDeployed').textContent = `₹${totalAccepted}L`;
+        }
+
+        // Investment Stage Chart (Bar)
+        const stageCtx = document.getElementById('investmentStageChart')?.getContext('2d');
+        if (stageCtx) {
+            new Chart(stageCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Pending Flow', 'Accepted Capital'],
+                    datasets: [{
+                        label: 'Investment (Lakhs)',
+                        data: [totalPending, totalAccepted],
+                        backgroundColor: ['#f59e0b', '#10b981'],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#e2e8f0' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        }
+
+        // Top Startups Chart (Doughnut)
+        const startupCtx = document.getElementById('topStartupsChart')?.getContext('2d');
+        if (startupCtx) {
+            const labels = Object.keys(startupCapitalMap);
+            const data = Object.values(startupCapitalMap);
+            
+            // Random colors generator
+            const bgColors = labels.map((_, i) => `hsl(${(i * 137.5) % 360}, 70%, 60%)`);
+
+            new Chart(startupCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels.length > 0 ? labels : ['No Accepted Deals'],
+                    datasets: [{
+                        data: data.length > 0 ? data : [1],
+                        backgroundColor: data.length > 0 ? bgColors : ['#cbd5e1'],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '65%',
+                    plugins: {
+                        legend: { position: 'right', labels: { color: '#64748b' } }
+                    }
+                }
+            });
+        }
+
+        // RIGHTONE Growth Chart (Area Line Chart)
+        const growthCtx = document.getElementById('growthChart')?.getContext('2d');
+        if (growthCtx) {
+            // Generate last 6 months labels dynamically
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const labels = [];
+            for (let i = 5; i >= 0; i--) {
+                const d = new Date();
+                d.setMonth(d.getMonth() - i);
+                labels.push(monthNames[d.getMonth()]);
+            }
+
+            // Mocked organic exponential growth curve for the demo
+            const startupsData = [12, 19, 28, 45, 68, 105];
+            const investorsData = [8, 14, 25, 38, 55, 92];
+
+            new Chart(growthCtx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Startups Onboarded',
+                            data: startupsData,
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.15)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Investors Registered',
+                            data: investorsData,
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'top', labels: { usePointStyle: true } } },
+                    interaction: { mode: 'index', intersect: false },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#e2e8f0', borderDash: [5, 5] } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
         }
     },
 

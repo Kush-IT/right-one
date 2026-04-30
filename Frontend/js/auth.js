@@ -7,6 +7,7 @@ const Auth = {
     setupEventListeners() {
         const signupForm = document.getElementById('signupForm');
         const loginForm = document.getElementById('loginForm');
+        const otpForm = document.getElementById('otpForm');
         const roleOptions = document.querySelectorAll('.role-option');
 
         let selectedRole = 'STARTUP';
@@ -36,7 +37,9 @@ const Auth = {
 
                 try {
                     const res = await API.post('/auth/signup', data);
-                    this.handleAuthSuccess(res.data);
+                    signupForm.style.display = 'none';
+                    document.getElementById('otpForm').style.display = 'block';
+                    UI.toast('OTP sent to your email', 'success');
                 } catch (err) {
                     UI.toast(err.message, 'error');
                 } finally {
@@ -58,6 +61,30 @@ const Auth = {
 
                 try {
                     const res = await API.post('/auth/login', data);
+                    loginForm.style.display = 'none';
+                    document.getElementById('otpForm').style.display = 'block';
+                    UI.toast('OTP sent to your email', 'success');
+                } catch (err) {
+                    UI.toast(err.message, 'error');
+                } finally {
+                    UI.hideLoading(btn);
+                }
+            });
+        }
+
+        if (otpForm) {
+            otpForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = otpForm.querySelector('button');
+                UI.showLoading(btn);
+
+                const data = {
+                    email: document.getElementById('email').value,
+                    otp: document.getElementById('otp').value
+                };
+
+                try {
+                    const res = await API.post('/auth/verify-otp', data);
                     this.handleAuthSuccess(res.data);
                 } catch (err) {
                     UI.toast(err.message, 'error');

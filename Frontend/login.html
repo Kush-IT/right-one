@@ -32,8 +32,21 @@
                 <input type="password" id="password" class="form-input" placeholder="••••••••" required>
             </div>
 
-            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="">
                 Sign In
+            </button>
+        </form>
+
+        <form id="otpForm" style="display: none;">
+            <div class="form-group">
+                <label class="form-label">Enter OTP</label>
+                <input type="text" id="otp" class="form-input" placeholder="123456" required>
+                <small class="text-dim" style="display: block; margin-top: 0.5rem;">We've sent a 6-digit code to your
+                    email.</small>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                Verify OTP
             </button>
         </form>
 

@@ -15,6 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.Random;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -25,6 +28,7 @@ public class AuthService {
         private final PasswordEncoder passwordEncoder;
         private final JwtUtil jwtUtil;
         private final AuthenticationManager authenticationManager;
+        private final EmailService emailService;
 
         @Transactional
         public AuthResponse register(SignupRequest request) {
@@ -51,27 +55,54 @@ public class AuthService {
                         investorRepository.save(profile);
                 }
 
-                var userDetails = org.springframework.security.core.userdetails.User.builder()
-                                .username(user.getEmail())
-                                .password(user.getPassword())
-                                .roles(user.getRole().name())
-                                .build();
+                String otp = String.format("%06d", new Random().nextInt(999999));
+                user.setOtp(otp);
+                user.setOtpExpiry(LocalDateTime.now().plusMinutes(5));
+                userRepository.save(user);
 
-                var jwtToken = jwtUtil.generateToken(userDetails);
+                emailService.sendOtpEmail(user.getEmail(), otp);
+
                 return AuthResponse.builder()
-                                .token(jwtToken)
                                 .email(user.getEmail())
-                                .name(user.getName())
-                                .role(user.getRole().name())
-                                .id(user.getId())
                                 .build();
         }
 
+        @Transactional
         public AuthResponse login(LoginRequest request) {
                 authenticationManager.authenticate(
                                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
                 var user = userRepository.findByEmail(request.getEmail())
-                                .orElseThrow();
+                                .orElseThrow(() -> new RuntimeException("User not found"));
+
+                String otp = String.format("%06d", new Random().nextInt(999999));
+                user.setOtp(otp);
+                user.setOtpExpiry(LocalDateTime.now().plusMinutes(5));
+                userRepository.save(user);
+
+                emailService.sendOtpEmail(user.getEmail(), otp);
+
+                return AuthResponse.builder()
+                                .email(user.getEmail())
+                                .build();
+        }
+
+        @Transactional
+        public AuthResponse verifyOtp(com.example.Right.dto.VerifyOtpRequest request) {
+                var user = userRepository.findByEmail(request.getEmail())
+                                .orElseThrow(() -> new RuntimeException("User not found"));
+
+                if (user.getOtp() == null || !user.getOtp().equals(request.getOtp())) {
+                        throw new RuntimeException("Invalid OTP");
+                }
+
+                if (user.getOtpExpiry() != null && user.getOtpExpiry().isBefore(LocalDateTime.now())) {
+                        throw new RuntimeException("OTP expired");
+                }
+
+                // Clear OTP after successful verification
+                user.setOtp(null);
+                user.setOtpExpiry(null);
+                userRepository.save(user);
 
                 var userDetails = org.springframework.security.core.userdetails.User.builder()
                                 .username(user.getEmail())

@@ -34,6 +34,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    private String otp;
+
+    private LocalDateTime otpExpiry;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 }
