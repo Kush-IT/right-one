@@ -1,0 +1,4 @@
+target/*.jar
+node_modules
+.git
+.gitignore
