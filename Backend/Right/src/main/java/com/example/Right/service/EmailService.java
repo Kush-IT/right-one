@@ -21,7 +21,6 @@ public class EmailService {
             message.setSubject("Your Login OTP - RIGHTONE");
             message.setText(
                     "Your One-Time Password (OTP) for login is: " + otp + "\n\nThis OTP is valid for 5 minutes.");
-
             mailSender.send(message);
             log.info("OTP email sent successfully to: {}", to);
         } catch (Exception e) {
