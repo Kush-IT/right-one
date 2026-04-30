@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+backend/Right/src/main/resources/application-dev.properties
+**/application-dev.properties
+**/application-local.properties
