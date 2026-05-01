@@ -27,6 +27,11 @@ public class AuthController {
         return ResponseEntity.ok(ApiResponse.success("OTP sent to your email", authService.login(request)));
     }
 
+    @PostMapping("/resend-otp")
+    public ResponseEntity<ApiResponse<AuthResponse>> resendOtp(@RequestBody com.example.Right.dto.ResendOtpRequest request) {
+        return ResponseEntity.ok(ApiResponse.success("OTP resent to your email", authService.resendOtp(request)));
+    }
+
     @PostMapping("/verify-otp")
     public ResponseEntity<ApiResponse<AuthResponse>> verifyOtp(@RequestBody VerifyOtpRequest request) {
         return ResponseEntity.ok(ApiResponse.success("Login successful", authService.verifyOtp(request)));

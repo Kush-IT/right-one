@@ -75,7 +75,7 @@ const Auth = {
         if (otpForm) {
             otpForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                const btn = otpForm.querySelector('button');
+                const btn = otpForm.querySelector('button[type="submit"]');
                 UI.showLoading(btn);
 
                 const data = {
@@ -92,6 +92,39 @@ const Auth = {
                     UI.hideLoading(btn);
                 }
             });
+        }
+
+        const resendOtpBtnLogin = document.getElementById('resendOtpBtnLogin');
+        const resendOtpBtnSignup = document.getElementById('resendOtpBtnSignup');
+
+        const handleResendOtp = async (btn) => {
+            const email = document.getElementById('email').value;
+            if (!email) {
+                UI.toast('Email is required', 'error');
+                return;
+            }
+            
+            const originalText = btn.textContent;
+            btn.textContent = 'Resending...';
+            btn.disabled = true;
+
+            try {
+                await API.post('/auth/resend-otp', { email });
+                UI.toast('OTP resent to your email', 'success');
+            } catch (err) {
+                UI.toast(err.message, 'error');
+            } finally {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        };
+
+        if (resendOtpBtnLogin) {
+            resendOtpBtnLogin.addEventListener('click', () => handleResendOtp(resendOtpBtnLogin));
+        }
+
+        if (resendOtpBtnSignup) {
+            resendOtpBtnSignup.addEventListener('click', () => handleResendOtp(resendOtpBtnSignup));
         }
     },
 
@@ -132,9 +165,11 @@ const Auth = {
     },
 
     logout() {
-        localStorage.removeItem(CONFIG.TOKEN_KEY);
-        localStorage.removeItem(CONFIG.USER_KEY);
-        window.location.href = CONFIG.FRONTEND_ROOT + 'login.html';
+        if (window.confirm("Are you sure you want to log out?")) {
+            localStorage.removeItem(CONFIG.TOKEN_KEY);
+            localStorage.removeItem(CONFIG.USER_KEY);
+            window.location.href = CONFIG.FRONTEND_ROOT + 'login.html';
+        }
     }
 };
 

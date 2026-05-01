@@ -87,6 +87,23 @@ public class AuthService {
         }
 
         @Transactional
+        public AuthResponse resendOtp(com.example.Right.dto.ResendOtpRequest request) {
+                var user = userRepository.findByEmail(request.getEmail())
+                                .orElseThrow(() -> new RuntimeException("User not found"));
+
+                String otp = String.format("%06d", new Random().nextInt(999999));
+                user.setOtp(otp);
+                user.setOtpExpiry(LocalDateTime.now().plusMinutes(5));
+                userRepository.save(user);
+
+                emailService.sendOtpEmail(user.getEmail(), otp);
+
+                return AuthResponse.builder()
+                                .email(user.getEmail())
+                                .build();
+        }
+
+        @Transactional
         public AuthResponse verifyOtp(com.example.Right.dto.VerifyOtpRequest request) {
                 var user = userRepository.findByEmail(request.getEmail())
                                 .orElseThrow(() -> new RuntimeException("User not found"));
