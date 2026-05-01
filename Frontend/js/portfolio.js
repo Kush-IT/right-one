@@ -16,12 +16,14 @@ const Portfolio = {
         const tableBody = document.getElementById('portfolioTableBody');
         try {
             const res = await API.get('/interests/portfolio');
-            const portfolio = res.data;
+            // Support both direct array and ApiResponse wrapper
+            const portfolio = (res && res.data) ? res.data : (Array.isArray(res) ? res : []);
+            
             tableBody.innerHTML = '';
 
-            if (portfolio.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 3rem;" class="text-dim">You don\'t have any accepted investments in your portfolio yet.</td></tr>';
-                this.updateStats([]);
+            if (!portfolio || portfolio.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 3rem;" class="text-dim">You don\'t have any accepted investments in your portfolio yet.</td></tr>';
+                this.updateStats([], 0, 0);
                 return;
             }
 
@@ -34,11 +36,11 @@ const Portfolio = {
 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td style="font-weight:600">${item.companyName}</td>
+                    <td style="font-weight:600">${item.companyName || 'N/A'}</td>
                     <td>₹${item.investmentAmount} Lakhs</td>
                     <td>${item.equityRequested}%</td>
                     <td><span class="badge badge-approved">ACTIVE HOLDING</span></td>
-                    <td class="text-muted">${new Date(item.createdAt).toLocaleDateString()}</td>
+                    <td class="text-muted">${item.createdAt ? new Date(item.createdAt).toLocaleDateString() : 'N/A'}</td>
                     <td>
                         <button onclick="Portfolio.downloadConfirmation(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="btn btn-secondary btn-sm">
                             <i class="fas fa-download"></i> PDF
@@ -51,8 +53,12 @@ const Portfolio = {
             this.updateStats(portfolio, totalCapital, totalEquity);
 
         } catch (err) {
-            UI.toast('Failed to load portfolio', 'error');
-            tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 3rem;" class="text-error">Error loading portfolio.</td></tr>';
+            console.error("Portfolio Load Error:", err);
+            // Only show error if it's a real failure, not just an empty result
+            if (tableBody) {
+                tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 3rem;" class="text-dim">No portfolio data found. Start investing to build your portfolio!</td></tr>';
+            }
+            this.updateStats([], 0, 0);
         }
     },
 

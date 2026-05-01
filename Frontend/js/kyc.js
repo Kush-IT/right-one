@@ -141,7 +141,60 @@ const KYC = {
 
         let valid = true;
         inputs.forEach(input => {
-            if (!input.value) {
+            let fieldValid = true;
+            const val = input.value.trim();
+
+            if (!val) {
+                fieldValid = false;
+            } else {
+                // Specific Validations
+                if (input.name === 'dateOfBirth') {
+                    const dob = new Date(val);
+                    if (dob >= new Date()) {
+                        UI.toast('Date of Birth must be in the past', 'error');
+                        fieldValid = false;
+                    }
+                }
+
+                if (input.name === 'identityNumber') {
+                    if (!/^\d{12}$/.test(val)) {
+                        UI.toast('Identity Number must be exactly 12 digits', 'error');
+                        fieldValid = false;
+                    }
+                }
+
+                if (input.name === 'panNumber') {
+                    if (!/^[A-Z]{5}\d{4}[A-Z]{1}$/.test(val.toUpperCase())) {
+                        UI.toast('Invalid PAN format (Expected: ABCDE1234F)', 'error');
+                        fieldValid = false;
+                    }
+                }
+
+                if (input.name === 'bankAccountNumber') {
+                    if (!/^\d{12}$/.test(val)) {
+                        UI.toast('Account Number must be 12 digits', 'error');
+                        fieldValid = false;
+                    }
+                }
+
+                if (input.name === 'ifscCode') {
+                    if (!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(val.toUpperCase())) {
+                        UI.toast('Invalid IFSC (Expected: ABCD0123456)', 'error');
+                        fieldValid = false;
+                    }
+                }
+
+                if (input.name === 'businessWebsite' && val) {
+                    try {
+                        new URL(val);
+                    } catch (_) {
+                        UI.toast('Please enter a valid website URL', 'error');
+                        fieldValid = false;
+                    }
+                }
+            }
+
+            if (!fieldValid) {
                 input.style.borderColor = 'var(--error)';
                 valid = false;
             } else {
@@ -149,7 +202,9 @@ const KYC = {
             }
         });
 
-        if (!valid) UI.toast(`Please fill all required fields in Step ${step}`, 'error');
+        if (!valid && !document.querySelector('.toast-error')) {
+            UI.toast(`Please correct the errors in Step ${step}`, 'error');
+        }
         return valid;
     },
 
@@ -183,6 +238,23 @@ const KYC = {
         console.log("KYC Submission Started");
 
         if (!this.validateAllSteps()) return;
+
+        // Check for duplicate file uploads
+        const files = [
+            document.getElementById('aadharCard').files[0],
+            document.getElementById('panCard').files[0],
+            document.getElementById('bankStatement').files[0],
+            document.getElementById('businessCertificate').files[0]
+        ].filter(f => f);
+
+        for (let i = 0; i < files.length; i++) {
+            for (let j = i + 1; j < files.length; j++) {
+                if (files[i].name === files[j].name && files[i].size === files[j].size) {
+                    UI.toast('Please upload unique documents for each section', 'error');
+                    return;
+                }
+            }
+        }
 
         if (!document.getElementById('termsAccepted').checked) {
             UI.toast('Please accept the terms and conditions', 'error');

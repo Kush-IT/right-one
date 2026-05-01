@@ -41,14 +41,14 @@
 
                     <div class="form-group">
                         <label class="form-label">Investment Amount (Lakhs)</label>
-                        <input type="number" step="0.001" id="investAmount" class="form-input" required
+                        <input type="number" step="0.001" min="0.001" id="investAmount" class="form-input" required
                             placeholder="e.g. 50">
                         <small class="text-dim">Min increase: ₹100 (0.001 Lakhs)</small>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">Equity Requested (%)</label>
-                        <input type="number" step="0.1" id="equityReq" class="form-input" required placeholder="e.g. 5">
+                        <input type="number" step="0.1" min="0" max="80" id="equityReq" class="form-input" required placeholder="e.g. 5">
                     </div>
 
                     <div class="form-group">
