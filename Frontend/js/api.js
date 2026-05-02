@@ -1,7 +1,4 @@
-/**
- * Senior API Wrapper
- * Handles normalization, token persistence, and interceptor-like behavior.
- */
+
 const API = {
     async request(endpoint, options = {}) {
         const token = localStorage.getItem(CONFIG.TOKEN_KEY);
@@ -24,7 +21,6 @@ const API = {
                 headers
             });
 
-            // Handle Global Status Interceptors
             if (response.status === 401) {
                 return this.handleUnauthorized();
             }

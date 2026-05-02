@@ -94,8 +94,7 @@ const Investor = {
                 const card = document.createElement('div');
                 card.className = 'glass-card deal-card';
                 
-                // Clean values to avoid double symbols
-                const cleanFunding = (deal.fundingRequired || '0').toString().replace(/[₹,L]/g, '').trim();
+                const formattedFunding = UI.formatLakhs(deal.fundingRequired);
                 const cleanEquity = (deal.equityOffered || '0').toString().replace(/[%]/g, '').trim();
 
                 card.innerHTML = `
@@ -103,7 +102,7 @@ const Investor = {
                     <p class="text-dim" style="font-size: 0.875rem; margin: 0.5rem 0;">${deal.companyName || 'Unknown Company'}</p>
                     <div style="margin: 1rem 0;">
                         <div class="stat-label">Funding Target</div>
-                        <div style="font-weight: 600;">₹${cleanFunding}L</div>
+                        <div style="font-weight: 600;">₹${formattedFunding}</div>
                     </div>
                     <div style="margin: 1rem 0;">
                         <div class="stat-label">Equity Offered</div>

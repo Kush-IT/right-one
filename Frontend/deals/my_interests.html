@@ -76,7 +76,7 @@
                     tr.innerHTML = `
                         <td style="font-weight:600">${interest.companyName || 'N/A'}</td>
                         <td>${interest.dealTitle || 'N/A'}</td>
-                        <td>${interest.fundingRequired || 'N/A'}</td>
+                        <td>₹${UI.formatLakhs(interest.fundingRequired)}</td>
                         <td><span class="badge badge-${interest.status.toLowerCase()} badge-md">${interest.status}</span></td>
                         <td class="text-muted">${new Date(interest.createdAt).toLocaleDateString()}</td>
                     `;

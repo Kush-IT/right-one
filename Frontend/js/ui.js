@@ -79,6 +79,25 @@ const UI = {
             document.body.style.overflow = '';
             modal.classList.remove('active');
         }
+    },
+
+    /**
+     * Format currency values to Lakhs (L) format
+     * @param {string | number} value 
+     */
+    formatLakhs(value) {
+        if (value === null || value === undefined) return '0L';
+        
+        // Remove symbols, spaces and commas
+        let cleanStr = value.toString().replace(/[₹,L\s]/g, '').replace(/,/g, '');
+        const num = parseFloat(cleanStr);
+        
+        if (isNaN(num)) return value;
+        
+        const lakhs = num / 100000;
+        // If it's a whole number, don't show decimals. Otherwise show up to 2.
+        const formatted = (lakhs % 1 === 0) ? lakhs : parseFloat(lakhs.toFixed(2));
+        return `${formatted}L`;
     }
 };
 

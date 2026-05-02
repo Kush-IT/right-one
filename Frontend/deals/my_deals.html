@@ -86,7 +86,7 @@
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
                         <td style="font-weight:600">${deal.title}</td>
-                        <td>${deal.fundingRequired}</td>
+                        <td>₹${UI.formatLakhs(deal.fundingRequired)}</td>
                         <td>${deal.equityOffered}</td>
                         <td>${interestsCount}</td>
                         <td><span class="badge badge-open badge-md">${deal.status}</span></td>
